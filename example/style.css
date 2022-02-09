@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: black;
+}
+
+svg {
+  overflow: visible;
+}
+text {
+  font-family: monospace;
+}
