@@ -6,6 +6,11 @@ yarn add react-composable-charts react d3
 
 🚨 🚧 **This library is WORK IN PROGRESS and there can be a lot of breaking changes.**
 
+## Examples
+
+- Scatteplot - [CodeSandbox](https://codesandbox.io/s/rcc-scatterplot-gus8g)
+- Stacked Area Graph - [CodeSandbox](https://codesandbox.io/s/rcc-stacked-area-d1xrx?file=/src/App.tsx)
+
 ## Docs
 
 ### Components
