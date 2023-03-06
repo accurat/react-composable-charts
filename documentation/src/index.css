@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.shadow,
+.sp-layout {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.main {
+  padding: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.main > * + * {
+  margin-top: 1rem;
+}
