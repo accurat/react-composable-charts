@@ -242,6 +242,12 @@ function App() {
       <ExampleLabelData />
 
       <h2>Function components</h2>
+
+      <p>
+        Function components are used to render a function in the chart. They
+        usually accepts a <Code>fn</Code> prop that is a function that accepts a
+        x value and returns a y value.
+      </p>
       <h3>
         <Code>LineFunction</Code>
       </h3>
