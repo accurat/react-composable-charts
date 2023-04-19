@@ -1,7 +1,8 @@
 import { CodeSandboxEmbed } from './CodesandboxEmbed'
 import { Code } from './Code'
-import { CodeSandbox } from './CodeSandbox'
+import { CodeSandbox, RCC_VERSION } from './CodeSandbox'
 
+const VERSION_TEXT = 'v' + RCC_VERSION
 function Table({ cells }: { cells: React.ReactNode[][] }) {
   const tdStyle = {
     border: '1px solid #cdcdcd',
@@ -55,7 +56,16 @@ function PropsTable({
 function App() {
   return (
     <div className="main">
-      <h1>React Composable Charts</h1>
+      <h1>
+        React Composable Charts{' '}
+        <code style={{ fontSize: '1.25rem' }}>{VERSION_TEXT}</code>
+      </h1>
+
+      <p>
+        <b>🚨 NB:</b> this library is still in early development. This
+        documentation is specific for version <code>{VERSION_TEXT}</code>. Any
+        different version might have breaking changes.
+      </p>
 
       <h2>Install</h2>
 
@@ -163,16 +173,6 @@ function App() {
       <ExamplePointData />
 
       <h3>
-        <Code>LineData</Code>
-      </h3>
-      <ExampleLineData />
-
-      <h3>
-        <Code>AreaData</Code>
-      </h3>
-      <ExampleAreaData />
-
-      <h3>
         <Code>RectData</Code>
       </h3>
       <ExampleRectData />
@@ -180,7 +180,37 @@ function App() {
       <h3>
         <Code>BarData</Code>
       </h3>
+
+      <p>
+        <Code>BarData</Code> is a special data component that allows to render
+        bars (rects) for each data point specifing the start and end of the bar.
+        To do so, <Code>x</Code> and <Code>y</Code> props accepts an object with{' '}
+        <Code>base</Code> (the bar bottom) and <Code>to</Code> (the bar top).
+        Here an example of vertical barchart
+      </p>
       <ExampleBarData />
+
+      <p>
+        If you want to render a stacked barchart, you can use the{' '}
+        <Code>stackNarrow</Code> function.
+      </p>
+      <ExampleStackedBarchart />
+
+      <h3>
+        <Code>LineData</Code>
+      </h3>
+      <ExampleLineData />
+
+      <h3>
+        <Code>AreaData</Code>
+      </h3>
+
+      <p>
+        As for <Code>BarData</Code>, <Code>AreaData</Code> accepts an object
+        with <Code>base</Code> and <Code>to</Code> props for <Code>y</Code>{' '}
+        props.
+      </p>
+      <ExampleAreaData />
 
       <h3>
         <Code>LabelsData</Code>
@@ -247,6 +277,40 @@ const dataTs = `export const dataset = [
   { key: "n", x: 42.23, y: 0.72 },
   { key: "b", x: 44.39, y: 0.97 },
   { key: "m", x: 72.24, y: 0.13 },
+];
+`
+
+const dataStackedTs = `export const dataset = [
+  { serie: "A", value: 13.621247938246794, category: "Cat 1" },
+  { serie: "A", value: 50.33793406484519, category: "Cat 2" },
+  { serie: "A", value: 0.967986903849094, category: "Cat 3" },
+  { serie: "B", value: 39.983235531734486, category: "Cat 1" },
+  { serie: "B", value: 48.8401186257581, category: "Cat 2" },
+  { serie: "B", value: 91.72521762333308, category: "Cat 3" },
+  { serie: "C", value: 57.01203374882626, category: "Cat 1" },
+  { serie: "C", value: 26.56612690193194, category: "Cat 2" },
+  { serie: "C", value: 98.75832987656905, category: "Cat 3" },
+  { serie: "D", value: 71.53236939612553, category: "Cat 1" },
+  { serie: "D", value: 61.61424862522307, category: "Cat 2" },
+  { serie: "D", value: 98.91903480695572, category: "Cat 3" },
+  { serie: "E", value: 90.55723582054097, category: "Cat 1" },
+  { serie: "E", value: 4.53256449881696, category: "Cat 2" },
+  { serie: "E", value: 1.8372763409422843, category: "Cat 3" },
+  { serie: "F", value: 92.53848659726005, category: "Cat 1" },
+  { serie: "F", value: 52.71149196840017, category: "Cat 2" },
+  { serie: "F", value: 86.00364579986699, category: "Cat 3" },
+  { serie: "G", value: 10.393801343498698, category: "Cat 1" },
+  { serie: "G", value: 68.27735195305023, category: "Cat 2" },
+  { serie: "G", value: 6.373842246991823, category: "Cat 3" },
+  { serie: "H", value: 83.90818128052047, category: "Cat 1" },
+  { serie: "H", value: 37.927408866972925, category: "Cat 2" },
+  { serie: "H", value: 47.71929746475645, category: "Cat 3" },
+  { serie: "I", value: 86.53903932927196, category: "Cat 1" },
+  { serie: "I", value: 36.699676248875335, category: "Cat 2" },
+  { serie: "I", value: 49.48086733106838, category: "Cat 3" },
+  { serie: "J", value: 4.379620050636324, category: "Cat 1" },
+  { serie: "J", value: 40.71813959759349, category: "Cat 2" },
+  { serie: "J", value: 87.81511205115957, category: "Cat 3" }
 ];
 `
 const COLOR = '#6bc2be'
@@ -375,7 +439,7 @@ export default function App() {
           y={{ scale: "linear", domain: yDomain }}
           nice={true}
         >
-          <Grid>
+          <Grid tickSize={50}>
             <Grid.XLines stroke="grey" />
             <Grid.YLines stroke="grey" />
             <Grid.XAxes stroke="black" strokeWidth={2} />
@@ -649,25 +713,28 @@ export default function App() {
         height={height - padding * 2}
       >
         <Cartesian
-          x={{ scale: "band", domain: xDomain }}
+          x={{ scale: "band", domain: xDomain, paddingInner: 0.1 }}
           y={{ scale: "linear", domain: yDomain }}
           nice={true}
         >
           <Grid>
             <Grid.XLines stroke="grey" />
             <Grid.YLines stroke="grey" />
-            <Grid.XAxes stroke="black" strokeWidth={2} />
-            <Grid.YAxes stroke="black" strokeWidth={2} />
             <Grid.XLabels padding={5} />
             <Grid.YLabels padding={5} />
           </Grid>
-
+          
           <BarData
-            data={dataset}
-            x={(d) => d.key}
-            y={{ to: (d) => d.y }}
-            fill="#6bc2be"
+          data={dataset}
+          x={(d) => d.key}
+          y={{ to: (d) => d.y, base: 0 }}
+          fill="#6bc2be"
           />
+
+          <Grid>
+            <Grid.XAxes stroke="black" strokeWidth={2} />
+            <Grid.YAxes stroke="black" strokeWidth={2} />
+          </Grid>
         </Cartesian>
       </Chart>
     </svg>
@@ -676,6 +743,81 @@ export default function App() {
 `,
       },
       'data.ts': dataTs,
+    }}
+  />
+)
+export const ExampleStackedBarchart = () => (
+  <CodeSandbox
+    editorStyle={{ height: 540 }}
+    preivewStyle={{ height: 540 }}
+    files={{
+      '/App.tsx': {
+        code: `import { Chart, Cartesian, Grid, BarData, stackNarrow } from "react-composable-charts";
+import * as d3 from "d3";
+import { dataset } from "./data";
+
+export default function App() {
+  const width = 400;
+  const height = 400;
+  const padding = 40;
+
+  const categories = ["Cat 1", "Cat 2", "Cat 3"];
+  const stackedData = stackNarrow({
+    data: dataset,
+    categories,
+    getCategory: (d) => d.category,
+    getGroup: (d) => d.serie,
+    getValue: (d) => d.value
+  });
+
+  const xDomain = [...new Set(stackedData.map((d) => d.group))];
+  const yDomain = d3.extent(stackedData, (d) => d.to) as [number, number];
+  return (
+    <svg width={width} height={height}>
+      <Chart
+        top={padding}
+        left={padding}
+        width={width - padding * 2}
+        height={height - padding * 2}
+      >
+        <Cartesian
+          x={{ scale: "band", domain: xDomain, paddingInner: 0.1 }}
+          y={{ scale: "linear", domain: yDomain }}
+          color={{
+            scale: "ordinal",
+            domain: categories,
+            range: ["#011627", "#41EAD4", "#F71735"]
+          }}
+          nice
+        >
+          <Grid>
+            <Grid.XLines stroke="grey" />
+            <Grid.YLines stroke="grey" />
+            <Grid.XLabels padding={5} />
+            <Grid.YLabels padding={5} />
+          </Grid>
+
+          {categories.map((cat) => (
+            <BarData
+              data={stackedData.filter((d) => d.category === cat)}
+              x={(d) => d.group}
+              y={{ to: (d) => d.to, base: (d) => d.base }}
+              fill={(d) => d.category}
+            />
+          ))}
+
+          <Grid>
+            <Grid.XAxes stroke="black" strokeWidth={2} />
+            <Grid.YAxes stroke="black" strokeWidth={2} />
+          </Grid>
+        </Cartesian>
+      </Chart>
+    </svg>
+  );
+}
+`,
+      },
+      'data.ts': dataStackedTs,
     }}
   />
 )
