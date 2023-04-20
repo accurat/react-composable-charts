@@ -162,6 +162,9 @@ function App() {
           id: 'area-function',
           level: 1,
         },
+        { title: 'More examples', id: 'more-examples', level: 0 },
+        { title: 'Animated Scatterplot', id: 'animated-scatterplot', level: 1 },
+        { title: 'Stacked Area Chart', id: 'stacked-area-chart', level: 1 },
       ]}
     >
       <div className="main">
@@ -370,9 +373,19 @@ function App() {
         </h3>
         <ExampleAreaFunction />
 
-        <CodeSandboxEmbed src="https://codesandbox.io/embed/rcc-scatterplot-gus8g?fontsize=14&hidenavigation=1&theme=dark" />
+        <h2 id="more-examples">More Examples</h2>
 
-        <CodeSandboxEmbed src="https://codesandbox.io/embed/rcc-stacked-area-graph-d1xrx?fontsize=14&hidenavigation=1&theme=dark" />
+        <h3 id="animated-scatterplot">Animated Scatterplot</h3>
+
+        <div>
+          <CodeSandboxEmbed src="https://codesandbox.io/embed/rcc-scatterplot-gus8g?fontsize=14&hidenavigation=1&theme=dark" />
+        </div>
+
+        <h3 id="stacked-area-chart">Stacked Area Chart</h3>
+
+        <div>
+          <CodeSandboxEmbed src="https://codesandbox.io/embed/rcc-stacked-area-graph-d1xrx?fontsize=14&hidenavigation=1&theme=dark" />
+        </div>
       </div>
     </WithSidebar>
   )
