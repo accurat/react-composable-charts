@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useWindowSize } from 'react-use'
 
 export function WithSidebar({
   title,
@@ -9,9 +10,10 @@ export function WithSidebar({
   items: { title: React.ReactNode; id: string; level: number }[]
   children?: React.ReactNode
 }) {
-  const SIDEBAR_WIDTH = '20rem'
+  const { width } = useWindowSize(1, 1)
+  const isMobile = width < 768
+  const SIDEBAR_WIDTH = isMobile ? '0' : '20rem'
   const [selected, setSelected] = useState('')
-  console.log('selected: ', selected)
 
   useEffect(() => {
     const headings = [
@@ -23,11 +25,9 @@ export function WithSidebar({
         const entry = entries.find((e) => e.isIntersecting)
         if (entry) {
           setSelected(entry.target.id)
-          console.log('entry.target.id: ', entry.target.id)
         }
       },
       {
-        threshold: [0],
         rootMargin: '0px 0px -80% 0px',
       }
     )
@@ -49,6 +49,7 @@ export function WithSidebar({
           padding: '1rem 0',
           boxSizing: 'border-box',
           borderRight: '1px solid #f5f5f5',
+          display: isMobile ? 'none' : 'block',
         }}
       >
         {title && (

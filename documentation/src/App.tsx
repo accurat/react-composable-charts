@@ -1,7 +1,6 @@
 import { CodeSandboxEmbed } from './CodesandboxEmbed'
 import { Code } from './Code'
 import { CodeSandbox, RCC_VERSION } from './CodeSandbox'
-import { useEffect, useState } from 'react'
 import { WithSidebar } from './WithSidebar'
 
 const VERSION_TEXT = 'v' + RCC_VERSION
