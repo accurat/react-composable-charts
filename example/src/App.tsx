@@ -1,7 +1,4 @@
-import 'react-app-polyfill/ie11'
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import './style.css'
 import {
   AreaData,
   BarData,
@@ -16,7 +13,7 @@ import {
   PointData,
   RectData,
   Style,
-} from '../src'
+} from '../../src'
 import { extent, range } from 'd3'
 import { makeLayout } from 'yogurt-layout'
 
@@ -35,8 +32,8 @@ const App = () => {
 
   const layout = makeLayout({
     id: 'svg',
-    width: 400,
-    height: 400,
+    width: 600,
+    height: 600,
     padding: 10,
     children: [
       {
@@ -63,7 +60,6 @@ const App = () => {
       <svg width={layout.svg.width} height={layout.svg.height}>
         <Chart {...layout.chart}>
           <Cartesian
-            nice
             x={{
               scale: 'linear',
               domain: extent(data.map((d) => d.x)) as [number, number],
@@ -187,4 +183,4 @@ const App = () => {
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+export default App
