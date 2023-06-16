@@ -246,8 +246,25 @@ function App() {
 
         <p>
           It is also possible to pass props to <Code>Grid</Code> component that
-          reflect to the entire grid, such as <Code>tickCount</Code> or{' '}
-          <Code>tickSize</Code>.
+          reflect to the entire grid, such as:
+          <ul>
+            <li>
+              <Code>tickCount</Code>: number of ticks to be displayes of each
+              axis.
+            </li>
+            <li>
+              <Code>tickSize</Code>: distance between each tick.
+            </li>
+
+            <li>
+              <Code>xAnchor</Code>: position of x axes and x labels. Can be{' '}
+              <Code>'bottom' | 'top' | 'none'</Code>
+            </li>
+            <li>
+              <Code>yAnchor</Code>: position of y axes and y labels. Can be{' '}
+              <Code>'left' | 'right' | 'none'</Code>
+            </li>
+          </ul>
         </p>
 
         <ExampleGrid />
