@@ -9,9 +9,9 @@ import {
   scaleTime,
 } from 'd3-scale'
 import React from 'react'
-import { useGesture, Vector2 } from '@use-gesture/react'
+// import { useGesture, Vector2 } from '@use-gesture/react'
 import {
-  CartesianScale,
+  // CartesianScale,
   isScaleContinuous,
   ScaleCategorical,
   ScaleContinuous,
@@ -122,60 +122,60 @@ function buildOrdinalScale(options: OrdinalScaleConfigs) {
   }
 }
 
-function computePannedDomain(scale: CartesianScale, movement: number) {
-  return isScaleContinuous(scale)
-    ? scale.range().map((ext) => scale.invert(ext - movement))
-    : scale.domain()
-}
+// function computePannedDomain(scale: CartesianScale, movement: number) {
+//   return isScaleContinuous(scale)
+//     ? scale.range().map((ext) => scale.invert(ext - movement))
+//     : scale.domain()
+// }
 
-function computeZoommedDomain(
-  scale: CartesianScale,
-  zoom: number,
-  origin: number
-) {
-  return isScaleContinuous(scale)
-    ? scale.range().map((ext) => scale.invert((ext - origin) * zoom + ext))
-    : scale.domain()
-}
+// function computeZoommedDomain(
+//   scale: CartesianScale,
+//   zoom: number,
+//   origin: number
+// ) {
+//   return isScaleContinuous(scale)
+//     ? scale.range().map((ext) => scale.invert((ext - origin) * zoom + ext))
+//     : scale.domain()
+// }
 
-function handlePan<X extends CartesianScaleType, Y extends CartesianScaleType>(
-  xScale: CartesianScale,
-  yScale: CartesianScale,
-  options: { delta: [number, number]; cb: CartesianGestureCallback<X, Y> }
-) {
-  const { delta, cb } = options
-  const [dx, dy] = delta
+// function handlePan<X extends CartesianScaleType, Y extends CartesianScaleType>(
+//   xScale: CartesianScale,
+//   yScale: CartesianScale,
+//   options: { delta: [number, number]; cb: CartesianGestureCallback<X, Y> }
+// ) {
+//   const { delta, cb } = options
+//   const [dx, dy] = delta
 
-  const xDomain = computePannedDomain(xScale, dx) as CartesianScaleDomain<X>
-  const yDomain = computePannedDomain(yScale, dy) as CartesianScaleDomain<Y>
+//   const xDomain = computePannedDomain(xScale, dx) as CartesianScaleDomain<X>
+//   const yDomain = computePannedDomain(yScale, dy) as CartesianScaleDomain<Y>
 
-  cb({ xDomain, yDomain })
-}
+//   cb({ xDomain, yDomain })
+// }
 
-function handleZoom<X extends CartesianScaleType, Y extends CartesianScaleType>(
-  xScale: CartesianScale,
-  yScale: CartesianScale,
-  options: {
-    zoom: number
-    mouse: [number, number]
-    cb: CartesianGestureCallback<X, Y>
-  }
-) {
-  const { zoom, mouse, cb } = options
-  const [mx, my] = mouse
-  const xDomain = computeZoommedDomain(
-    xScale,
-    zoom,
-    mx
-  ) as CartesianScaleDomain<X>
-  const yDomain = computeZoommedDomain(
-    yScale,
-    zoom,
-    my
-  ) as CartesianScaleDomain<Y>
+// function handleZoom<X extends CartesianScaleType, Y extends CartesianScaleType>(
+//   xScale: CartesianScale,
+//   yScale: CartesianScale,
+//   options: {
+//     zoom: number
+//     mouse: [number, number]
+//     cb: CartesianGestureCallback<X, Y>
+//   }
+// ) {
+//   const { zoom, mouse, cb } = options
+//   const [mx, my] = mouse
+//   const xDomain = computeZoommedDomain(
+//     xScale,
+//     zoom,
+//     mx
+//   ) as CartesianScaleDomain<X>
+//   const yDomain = computeZoommedDomain(
+//     yScale,
+//     zoom,
+//     my
+//   ) as CartesianScaleDomain<Y>
 
-  cb({ xDomain, yDomain })
-}
+//   cb({ xDomain, yDomain })
+// }
 
 interface CartesianProps<
   X extends CartesianScaleType,
@@ -185,9 +185,9 @@ interface CartesianProps<
   y?: CartesianScaleOptions<Y>
   color?: OrdinalScaleConfigs
   nice?: 'x' | 'y' | boolean
-  onDrag?: CartesianGestureCallback<X, Y>
-  onPinch?: CartesianGestureCallback<X, Y>
-  onWheel?: CartesianGestureCallback<X, Y>
+  // onDrag?: CartesianGestureCallback<X, Y>
+  // onPinch?: CartesianGestureCallback<X, Y>
+  // onWheel?: CartesianGestureCallback<X, Y>
   children?: React.ReactNode
 }
 
@@ -200,11 +200,11 @@ export function Cartesian<
   color,
   children,
   nice = false,
-  onDrag,
-  onPinch,
-  onWheel,
-}: CartesianProps<X, Y>) {
-  const { top, left, bottom, right, width, height } = useChartContext()
+}: // onDrag,
+// onPinch,
+// onWheel,
+CartesianProps<X, Y>) {
+  const { top, left, bottom, right } = useChartContext()
 
   const xRange = tuple(left, right)
   const yRange = tuple(bottom, top)
@@ -220,40 +220,40 @@ export function Cartesian<
   if ((nice === true || nice === 'y') && isScaleContinuous(yScale))
     yScale.nice()
 
-  const bind = useGesture({
-    onDrag: (state) => {
-      if (!onDrag || state.pinching) return
-      const { delta } = state
-      handlePan(xScaleNotNice, yScaleNotNice, { delta, cb: onDrag })
-    },
-    onPinch: (state) => {
-      if (!onPinch) return
-      // TODO: fix pinch speed on mobile
-      const zoom = -state.velocity[0] / 50
+  // const bind = useGesture({
+  //   onDrag: (state) => {
+  //     if (!onDrag || state.pinching) return
+  //     const { delta } = state
+  //     handlePan(xScaleNotNice, yScaleNotNice, { delta, cb: onDrag })
+  //   },
+  //   onPinch: (state) => {
+  //     if (!onPinch) return
+  //     // TODO: fix pinch speed on mobile
+  //     const zoom = -state.velocity[0] / 50
 
-      // TODO: find user mouse
-      const mouse = tuple((left + right) / 2, (top + bottom) / 2)
+  //     // TODO: find user mouse
+  //     const mouse = tuple((left + right) / 2, (top + bottom) / 2)
 
-      handleZoom(xScaleNotNice, yScaleNotNice, { zoom, mouse, cb: onPinch })
-    },
-    onWheel: (state) => {
-      if (!onWheel || state.pinching) return
-      const delta: Vector2 = tuple(-state.delta[0], -state.delta[1])
-      handlePan(xScaleNotNice, yScaleNotNice, { delta, cb: onWheel })
-    },
-  })
+  //     handleZoom(xScaleNotNice, yScaleNotNice, { zoom, mouse, cb: onPinch })
+  //   },
+  //   onWheel: (state) => {
+  //     if (!onWheel || state.pinching) return
+  //     const delta: Vector2 = tuple(-state.delta[0], -state.delta[1])
+  //     handlePan(xScaleNotNice, yScaleNotNice, { delta, cb: onWheel })
+  //   },
+  // })
 
   return (
     <CartesianContext.Provider value={{ xScale, yScale, colorScale }}>
       {children}
-      <rect
+      {/* <rect
         {...bind()}
         x={left}
         y={top}
         width={width}
         height={height}
         fill="transparent"
-      />
+      /> */}
     </CartesianContext.Provider>
   )
 }
