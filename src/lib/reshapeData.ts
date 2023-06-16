@@ -1,4 +1,4 @@
-import omit from 'lodash/omit'
+import { omit } from 'lodash-es'
 
 export const wideToNarrow = <
   T extends object,

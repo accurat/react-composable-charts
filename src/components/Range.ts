@@ -1,4 +1,4 @@
-import lodashClamp from 'lodash/clamp'
+import { clamp as lodashClamp } from 'lodash-es'
 
 const clampValue = (value: number, [min, max]: [number, number]) => {
   if (min > max) [min, max] = [max, min]

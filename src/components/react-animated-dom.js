@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Transition, TransitionGroup } from 'react-transition-group'
 import { select } from 'd3-selection'
 import 'd3-transition'
-import zipObject from 'lodash/zipObject'
+import _ from 'lodash-es'
 import { DEFAULT_EASE } from '../internal/constants'
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -233,12 +233,12 @@ const tags = ['div']
 const buildComponent = (Comp, fixedProps) => (props) =>
   <Comp {...props} {...fixedProps} />
 
-export const animatedGroup = zipObject(
+export const animatedGroup = _.zipObject(
   tags,
   tags.map((tag) => buildComponent(AnimatedGroup, { tag }))
 )
 
-export const animated = zipObject(
+export const animated = _.zipObject(
   tags,
   tags.map((tag) => buildComponent(Animated, { tag }))
 )
