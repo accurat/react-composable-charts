@@ -1,7 +1,16 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1-4",
   "license": "MIT",
+  "type": "module",
   "main": "dist/index.js",
+  "module": "dist/react-composable-charts.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/react-composable-charts.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -47,7 +56,6 @@
   },
   "name": "react-composable-charts",
   "author": "Ivan Rossi",
-  "module": "dist/react-composable-charts.esm.js",
   "size-limit": [
     {
       "path": "dist/react-composable-charts.cjs.production.min.js",
