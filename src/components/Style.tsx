@@ -1,4 +1,6 @@
-import { partition, pick, mapValues } from 'lodash-es'
+import partition from 'lodash/partition'
+import pick from 'lodash/pick'
+import mapValues from 'lodash/mapValues'
 import React from 'react'
 import {
   CommonStyleProps,

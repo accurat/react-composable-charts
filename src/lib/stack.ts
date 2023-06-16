@@ -1,4 +1,7 @@
-import { groupBy, keyBy, get, compact } from 'lodash-es'
+import groupBy from 'lodash/groupBy'
+import keyBy from 'lodash/keyBy'
+import get from 'lodash/get'
+import compact from 'lodash/compact'
 
 type Stack<T> = {
   datum: T

@@ -1,4 +1,4 @@
-import { isNil } from 'lodash-es'
+import isNil from 'lodash/isNil'
 
 export const xand = (a: boolean, b: boolean) => a === b
 export const xor = (a: boolean, b: boolean) => !xand(a, b)

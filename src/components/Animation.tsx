@@ -1,4 +1,4 @@
-import { mapValues } from 'lodash-es'
+import mapValues from 'lodash/mapValues'
 import React from 'react'
 import { DEFAULT_EASE } from '../internal/constants'
 import {

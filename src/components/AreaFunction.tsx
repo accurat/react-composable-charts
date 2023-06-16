@@ -1,4 +1,4 @@
-import { range } from 'lodash-es'
+import range from 'lodash/range'
 import React from 'react'
 import { CommonStyleProps, isScaleContinuous } from '../lib/types'
 import { AreaData } from './AreaData'
