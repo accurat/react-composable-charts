@@ -1,28 +1,29 @@
 {
   "name": "example",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "d3": "^7.3.0",
-    "react-app-polyfill": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "yogurt-layout": "^0.0.4"
   },
-  "alias": {
-    "react": "../node_modules/react",
-    "react-dom": "../node_modules/react-dom/profiling",
-    "scheduler/tracing": "../node_modules/scheduler/tracing-profiling"
-  },
   "devDependencies": {
-    "@types/d3": "^7.1.0",
-    "@types/react": "^16.9.11",
-    "@types/react-dom": "^16.8.4",
-    "babel-core": "^6.26.3",
-    "parcel": "^2.0.0-beta.1",
-    "typescript": "^3.4.5"
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.9"
   }
 }

@@ -1,7 +1,4 @@
-import 'react-app-polyfill/ie11'
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import './style.css'
 import {
   AreaData,
   BarData,
@@ -16,7 +13,9 @@ import {
   PointData,
   RectData,
   Style,
-} from '../src'
+  Tooltip,
+  Svg,
+} from '../../src'
 import { extent, range } from 'd3'
 import { makeLayout } from 'yogurt-layout'
 
@@ -35,8 +34,8 @@ const App = () => {
 
   const layout = makeLayout({
     id: 'svg',
-    width: 400,
-    height: 400,
+    width: 600,
+    height: 600,
     padding: 10,
     children: [
       {
@@ -60,10 +59,9 @@ const App = () => {
       <div>
         <button onClick={() => setData(createDataset())}>shuffle</button>
       </div>
-      <svg width={layout.svg.width} height={layout.svg.height}>
+      <Svg width={layout.svg.width} height={layout.svg.height}>
         <Chart {...layout.chart}>
           <Cartesian
-            nice
             x={{
               scale: 'linear',
               domain: extent(data.map((d) => d.x)) as [number, number],
@@ -180,11 +178,29 @@ const App = () => {
                 enter={{ opacity: 0 }}
               />
             </ClipRect>
+
+            <circle cx={100} cy={100} r={10} fill="red" />
+            <Tooltip
+              x={100}
+              y={-20}
+              horizontalAnchor="center"
+              verticalAnchor="end"
+            >
+              <div
+                style={{
+                  backgroundColor: 'white',
+                  padding: 10,
+                  borderRadius: 10,
+                }}
+              >
+                ciao
+              </div>
+            </Tooltip>
           </Cartesian>
         </Chart>
-      </svg>
+      </Svg>
     </div>
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+export default App
