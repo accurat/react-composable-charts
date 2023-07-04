@@ -13,6 +13,8 @@ import {
   PointData,
   RectData,
   Style,
+  Tooltip,
+  Svg,
 } from '../../src'
 import { extent, range } from 'd3'
 import { makeLayout } from 'yogurt-layout'
@@ -57,7 +59,7 @@ const App = () => {
       <div>
         <button onClick={() => setData(createDataset())}>shuffle</button>
       </div>
-      <svg width={layout.svg.width} height={layout.svg.height}>
+      <Svg width={layout.svg.width} height={layout.svg.height}>
         <Chart {...layout.chart}>
           <Cartesian
             x={{
@@ -176,9 +178,27 @@ const App = () => {
                 enter={{ opacity: 0 }}
               />
             </ClipRect>
+
+            <circle cx={100} cy={100} r={10} fill="red" />
+            <Tooltip
+              x={100}
+              y={-20}
+              horizontalAnchor="center"
+              verticalAnchor="end"
+            >
+              <div
+                style={{
+                  backgroundColor: 'white',
+                  padding: 10,
+                  borderRadius: 10,
+                }}
+              >
+                ciao
+              </div>
+            </Tooltip>
           </Cartesian>
         </Chart>
-      </svg>
+      </Svg>
     </div>
   )
 }
