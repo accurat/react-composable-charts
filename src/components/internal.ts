@@ -50,3 +50,12 @@ export const [CartesianContext, useCartesianContext] =
     yScale: CartesianScale
     colorScale?: ScaleOrdinal
   }>('Cartesian')
+
+export type Mouse = {
+  x: number
+  y: number
+}
+
+export const [MouseContext, useMouseContext] = buildContext<Mouse | undefined>(
+  "Interaction missing (use 'interactive' prop)"
+)

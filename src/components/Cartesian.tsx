@@ -8,7 +8,7 @@ import {
   scaleSqrt,
   scaleTime,
 } from 'd3-scale'
-import React from 'react'
+import React, { useState } from 'react'
 // import { useGesture, Vector2 } from '@use-gesture/react'
 import {
   // CartesianScale,
@@ -18,7 +18,12 @@ import {
   ScaleOrdinal,
   tuple,
 } from '../lib/types'
-import { CartesianContext, useChartContext } from './internal'
+import {
+  CartesianContext,
+  Mouse,
+  MouseContext,
+  useChartContext,
+} from './internal'
 
 export type ContinuousScaleConfigs =
   | { scale: 'linear'; domain?: number[] }
@@ -189,6 +194,7 @@ interface CartesianProps<
   // onPinch?: CartesianGestureCallback<X, Y>
   // onWheel?: CartesianGestureCallback<X, Y>
   children?: React.ReactNode
+  interactive?: boolean
 }
 
 export function Cartesian<
@@ -200,10 +206,8 @@ export function Cartesian<
   color,
   children,
   nice = false,
-}: // onDrag,
-// onPinch,
-// onWheel,
-CartesianProps<X, Y>) {
+  interactive = false,
+}: CartesianProps<X, Y>) {
   const { top, left, bottom, right } = useChartContext()
 
   const xRange = tuple(left, right)
@@ -220,40 +224,49 @@ CartesianProps<X, Y>) {
   if ((nice === true || nice === 'y') && isScaleContinuous(yScale))
     yScale.nice()
 
-  // const bind = useGesture({
-  //   onDrag: (state) => {
-  //     if (!onDrag || state.pinching) return
-  //     const { delta } = state
-  //     handlePan(xScaleNotNice, yScaleNotNice, { delta, cb: onDrag })
-  //   },
-  //   onPinch: (state) => {
-  //     if (!onPinch) return
-  //     // TODO: fix pinch speed on mobile
-  //     const zoom = -state.velocity[0] / 50
-
-  //     // TODO: find user mouse
-  //     const mouse = tuple((left + right) / 2, (top + bottom) / 2)
-
-  //     handleZoom(xScaleNotNice, yScaleNotNice, { zoom, mouse, cb: onPinch })
-  //   },
-  //   onWheel: (state) => {
-  //     if (!onWheel || state.pinching) return
-  //     const delta: Vector2 = tuple(-state.delta[0], -state.delta[1])
-  //     handlePan(xScaleNotNice, yScaleNotNice, { delta, cb: onWheel })
-  //   },
-  // })
-
   return (
     <CartesianContext.Provider value={{ xScale, yScale, colorScale }}>
-      {children}
-      {/* <rect
-        {...bind()}
-        x={left}
-        y={top}
-        width={width}
-        height={height}
-        fill="transparent"
-      /> */}
+      <MouseListener interactive={interactive}>{children}</MouseListener>
     </CartesianContext.Provider>
+  )
+}
+
+const MouseListener = ({
+  interactive,
+  children,
+}: {
+  interactive: boolean
+  children?: React.ReactNode
+}) => {
+  const { top, left, width, height } = useChartContext()
+
+  const [mouse, setMouse] = useState<Mouse | undefined>(undefined)
+
+  const handlePointerMove = (e: React.PointerEvent<SVGRectElement>) => {
+    const bbox = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - bbox.left + left
+    const y = e.clientY - bbox.top + top
+    setMouse({ x, y })
+  }
+
+  const handlePointerLeave = () => {
+    setMouse(undefined)
+  }
+  return (
+    <MouseContext.Provider value={mouse}>
+      {children}
+      {interactive && (
+        <rect
+          x={left}
+          y={top}
+          width={width}
+          height={height}
+          fill="transparent"
+          style={{ touchAction: 'none' }}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
+        />
+      )}
+    </MouseContext.Provider>
   )
 }

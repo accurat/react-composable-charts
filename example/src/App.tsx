@@ -15,6 +15,7 @@ import {
   Style,
   Tooltip,
   Svg,
+  useMouseContext,
 } from '../../src'
 import { extent, range } from 'd3'
 import { makeLayout } from 'yogurt-layout'
@@ -75,6 +76,7 @@ const App = () => {
               domain: ['positive', 'negative'],
               range: ['white', 'red'],
             }}
+            interactive
           >
             <Grid>
               <Style stroke="white">
@@ -196,10 +198,33 @@ const App = () => {
                 ciao
               </div>
             </Tooltip>
+
+            <TestMouse />
           </Cartesian>
         </Chart>
       </Svg>
     </div>
+  )
+}
+
+const TestMouse = () => {
+  const mouse = useMouseContext()
+  return (
+    <>
+      {mouse && <circle cx={mouse.x} cy={mouse.y} r={10} fill="red" />}
+      <Tooltip
+        x={0}
+        y={0}
+        style={{
+          backgroundColor: 'white',
+          padding: 10,
+          borderRadius: 10,
+        }}
+      >
+        mouse: {Math.round(mouse?.x ?? 0) || '-'},{' '}
+        {Math.round(mouse?.y ?? 0) || '-'}
+      </Tooltip>
+    </>
   )
 }
 
