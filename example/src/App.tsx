@@ -16,11 +16,12 @@ import {
   Tooltip,
   Svg,
   useMouseContext,
+  stackNarrow,
 } from '../../src'
 import { extent, range } from 'd3'
 import { makeLayout } from 'yogurt-layout'
 
-const createDataset = () => {
+const createLinechartDataset = () => {
   const maxX = Math.random() * 100
   const maxY = Math.random() * 100
   return range(5).map(() => ({
@@ -30,8 +31,8 @@ const createDataset = () => {
   }))
 }
 
-const App = () => {
-  const [data, setData] = React.useState(createDataset)
+const Linechart = () => {
+  const [data, setData] = React.useState(createLinechartDataset)
 
   const layout = makeLayout({
     id: 'svg',
@@ -58,7 +59,9 @@ const App = () => {
       }}
     >
       <div>
-        <button onClick={() => setData(createDataset())}>shuffle</button>
+        <button onClick={() => setData(createLinechartDataset())}>
+          shuffle
+        </button>
       </div>
       <Svg width={layout.svg.width} height={layout.svg.height}>
         <Chart {...layout.chart}>
@@ -225,6 +228,137 @@ const TestMouse = () => {
         {Math.round(mouse?.y ?? 0) || '-'}
       </Tooltip>
     </>
+  )
+}
+
+const categories = ['A', 'B', 'C']
+const colors = ['#FFC300', '#FF5733', '#C70039']
+const groups = ['a', 'b', 'c', 'd', 'e']
+const createBarchartDataset = () => {
+  return categories.flatMap((category) =>
+    groups.map((group) => ({
+      category,
+      group,
+      value: Math.random() * 100,
+    }))
+  )
+}
+
+const StackedBarchart = () => {
+  const [data] = React.useState(createBarchartDataset)
+
+  const [selectedA, setSelectedA] = React.useState(true)
+  const [selectedC, setSelectedC] = React.useState(true)
+
+  const selectedGroups = groups
+    .filter((d) => !(d === 'a' && !selectedA))
+    .filter((d) => !(d === 'c' && !selectedC))
+
+  const visibleData = data.filter((d) => selectedGroups.includes(d.group))
+
+  const layout = makeLayout({
+    id: 'svg',
+    width: 600,
+    height: 600,
+    padding: 10,
+    children: [
+      {
+        id: 'wrapper',
+        padding: 20,
+        children: [{ id: 'chart' }],
+      },
+    ],
+  })
+
+  const stackedData = stackNarrow({
+    data: visibleData,
+    categories,
+    getCategory: (d) => d.category,
+    getValue: (d) => d.value,
+    getGroup: (d) => d.group,
+  })
+
+  const xDomain = [...new Set(stackedData.map((d) => d.group))]
+  const yDomain = [0, extent(stackedData, (d) => d.to)[1]] as [number, number]
+
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+      }}
+    >
+      <div style={{ color: 'white', display: 'flex' }}>
+        <div>
+          a
+          <input
+            type="checkbox"
+            checked={selectedA}
+            onChange={() => setSelectedA(!selectedA)}
+          />
+        </div>
+        <div>
+          c
+          <input
+            type="checkbox"
+            checked={selectedC}
+            onChange={() => setSelectedC(!selectedC)}
+          />
+        </div>
+      </div>
+      <svg width={layout.svg.width} height={layout.svg.height}>
+        <Chart {...layout.chart}>
+          <Cartesian
+            x={{ scale: 'band', domain: xDomain }}
+            y={{ scale: 'linear', domain: yDomain }}
+            color={{
+              scale: 'ordinal',
+              domain: categories,
+              range: colors,
+            }}
+            nice
+          >
+            <Grid tickSize={100}>
+              <Grid.YLines stroke="white" strokeWidth={0.8} opacity={0.4} />
+
+              <Style fill={'white'}>
+                <Grid.XLabels padding={5} />
+                <Grid.YLabels
+                  padding={5}
+                  format={() => (d) =>
+                    new Intl.NumberFormat('en', {
+                      notation: 'compact',
+                    }).format(d as number)}
+                />
+              </Style>
+            </Grid>
+
+            <BarData
+              data={stackedData}
+              x={(d) => d.group}
+              y={{ to: (d) => d.to, base: (d) => d.base }}
+              fill={(d) => d.category as string}
+              dataKey={(d) => d.group + d.category}
+              opacity={1}
+              transform="translate(0, 0)"
+              enter={{ opacity: 0, transform: 'translate(100,0)' }}
+            />
+          </Cartesian>
+        </Chart>
+      </svg>
+    </div>
+  )
+}
+
+const App = () => {
+  return (
+    <div>
+      <Linechart />
+      <StackedBarchart />
+    </div>
   )
 }
 

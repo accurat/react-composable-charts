@@ -26,6 +26,24 @@ function hasOwnProperty(obj, property) {
   return Object.prototype.hasOwnProperty.call(obj, property)
 }
 
+function fallback(...fns) {
+  return function (...args) {
+    for (let i = 0; i < fns.length; i++) {
+      const fn = fns[i]
+
+      const value = typeof fn === 'function' ? fn(...args) : fn
+
+      const isValidValue =
+        value !== undefined &&
+        value !== null &&
+        (typeof value !== 'number' || !isNaN(value))
+
+      if (isValidValue) return value
+    }
+    return undefined
+  }
+}
+
 export function AnimatedDataset({
   dataset,
   attrs: unparsedAttrs,
@@ -67,14 +85,7 @@ export function AnimatedDataset({
               .text(attrs.text)
               .call((sel) => {
                 attrsList.forEach((a) => {
-                  sel.attr(
-                    a,
-                    hasOwnProperty(init, a)
-                      ? init[a]
-                      : hasOwnProperty(oldAttrs, a)
-                      ? oldAttrs[a]
-                      : attrs[a]
-                  )
+                  sel.attr(a, fallback(init[a], oldAttrs[a], attrs[a]))
                 })
               })
               .call((sel) => {
@@ -124,7 +135,7 @@ export function AnimatedDataset({
                 : sel.transition().ease(easing).delay(delay).duration(duration)
 
               oldAttrsList.forEach((a) => {
-                tran.attr(a, hasOwnProperty(init, a) ? init[a] : oldAttrs[a])
+                tran.attr(a, fallback(init[a], oldAttrs[a]))
               })
 
               tweensList.forEach((a) => {
