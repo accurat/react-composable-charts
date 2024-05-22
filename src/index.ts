@@ -1,3 +1,4 @@
+export * from './components/AnimatedDataset'
 export * from './components/Animation'
 export * from './components/AreaData'
 export * from './components/AreaFunction'
