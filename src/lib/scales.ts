@@ -38,6 +38,7 @@ export function computePos(
   return computeStartPos(value, scale) + scaleStep(scale) * position
 }
 
+/** @deprecated */
 export function buildComputePos<T>(
   dataAccessor: DataAccessor<T> | undefined,
   positionGetter: Getter<T, number> | undefined,

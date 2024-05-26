@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react'
-import { element } from '..'
+import { Elements, Texts, element } from '..'
 import { computePos } from '../lib/scales'
 import {
   AnimationProps,
@@ -12,8 +12,6 @@ import {
   Filter,
 } from '../lib/types'
 import { xor } from '../internal/utils'
-import { AnimatedDataset } from './AnimatedDataset'
-import { useSanitizedCascadingAnimation } from './Animation'
 import {
   GridContext,
   useCartesianContext,
@@ -132,7 +130,6 @@ Grid.YAxes = (props) => {
   return <element.line {...style} x1={xAxes} x2={xAxes} y1={top} y2={bottom} />
 }
 
-// TODO: use LabelsData component to render Grid.XLabels
 Grid.XLabels = ({
   format: buildFormatter = () => (value) => String(value),
   padding = 0,
@@ -147,10 +144,8 @@ Grid.XLabels = ({
   ...props
 }) => {
   const { top } = useChartContext()
-  const { xScale } = useCartesianContext()
   const { yAxes, xTicks } = useGridContext()
   const style = useCascadingStyle(props)
-  const animation = useSanitizedCascadingAnimation({ delay, duration })
 
   const ticks = _ticks ?? xTicks
   const filteredTicks = ticks.filter(filter)
@@ -159,24 +154,18 @@ Grid.XLabels = ({
   const formatter = buildFormatter(filteredTicks)
 
   return (
-    <>
-      <AnimatedDataset
-        tag="text"
-        dataset={filteredTicks}
-        attrs={{
-          x: (tick: DataValue) => computePos(tick, xScale),
-          y: yAxes + (inner ? -padding : padding),
-          textAnchor: 'middle',
-          dominantBaseline: inner ? 'auto' : 'hanging',
-          text: formatter,
-          opacity: 1,
-          ...style,
-        }}
-        init={{ opacity: 0, ...enter }}
-        keyFn={(tick: DataValue, i: number) => dataKey?.(tick, i) ?? tick}
-        {...(animation as any)}
-      />
-    </>
+    <Texts
+      data={filteredTicks}
+      data-x={(t) => t}
+      y={yAxes + (inner ? -padding : padding)}
+      textAnchor="middle"
+      dominantBaseline={inner ? 'auto' : 'hanging'}
+      text={formatter}
+      opacity={1}
+      enter={{ opacity: 0, ...enter }}
+      dataKey={(tick, i) => dataKey?.(tick, i) ?? tick}
+      {...style}
+    />
   )
 }
 
@@ -194,10 +183,8 @@ Grid.YLabels = ({
   ...props
 }) => {
   const { right } = useChartContext()
-  const { yScale } = useCartesianContext()
   const { xAxes, yTicks } = useGridContext()
   const style = useCascadingStyle(props)
-  const animation = useSanitizedCascadingAnimation({ delay, duration })
 
   const ticks = _ticks ?? yTicks
   const filteredTicks = ticks.filter(filter)
@@ -206,21 +193,17 @@ Grid.YLabels = ({
   const formatter = buildFormatter(filteredTicks)
 
   return (
-    <AnimatedDataset
-      tag="text"
-      dataset={filteredTicks}
-      attrs={{
-        x: xAxes + (inner ? padding : -padding),
-        y: (tick: DataValue) => computePos(tick, yScale),
-        textAnchor: inner ? 'start' : 'end',
-        dominantBaseline: 'middle',
-        text: formatter,
-        opacity: 1,
-        ...style,
-      }}
-      init={{ opacity: 0, ...enter }}
-      keyFn={(tick: DataValue, i: number) => dataKey?.(tick, i) ?? tick}
-      {...(animation as any)}
+    <Texts
+      data={filteredTicks}
+      x={xAxes + (inner ? padding : -padding)}
+      data-y={(t) => t}
+      textAnchor={inner ? 'start' : 'end'}
+      dominantBaseline="middle"
+      text={formatter}
+      opacity={1}
+      enter={{ opacity: 0, ...enter }}
+      dataKey={(tick, i) => dataKey?.(tick, i) ?? tick}
+      {...style}
     />
   )
 }
@@ -230,23 +213,19 @@ Grid.XLines = ({ ticks, dataKey, delay, duration, enter, ...props }) => {
   const { xScale } = useCartesianContext()
   const xTicks = ticks ?? useGridContext().xTicks
   const style = useCascadingStyle(props)
-  const animation = useSanitizedCascadingAnimation({ delay, duration })
 
   return (
-    <AnimatedDataset
+    <Elements
       tag="line"
-      dataset={xTicks}
-      attrs={{
-        x1: (tick: DataValue) => computePos(tick, xScale),
-        x2: (tick: DataValue) => computePos(tick, xScale),
-        y1: top,
-        y2: bottom,
-        opacity: 1,
-        ...style,
-      }}
-      init={{ opacity: 0, ...enter }}
-      keyFn={(tick: DataValue, i: number) => dataKey?.(tick, i) ?? tick}
-      {...(animation as any)}
+      data={xTicks}
+      x1={(t) => computePos(t, xScale)}
+      x2={(t) => computePos(t, xScale)}
+      y1={top}
+      y2={bottom}
+      opacity={1}
+      enter={{ opacity: 0, ...enter }}
+      dataKey={(tick: DataValue, i: number) => dataKey?.(tick, i) ?? tick}
+      {...style}
     />
   )
 }
@@ -256,23 +235,19 @@ Grid.YLines = ({ ticks, dataKey, enter, duration, delay, ...props }) => {
   const { yScale } = useCartesianContext()
   const yTicks = ticks ?? useGridContext().yTicks
   const style = useCascadingStyle(props)
-  const animation = useSanitizedCascadingAnimation({ delay, duration })
 
   return (
-    <AnimatedDataset
+    <Elements
       tag="line"
-      dataset={yTicks}
-      attrs={{
-        x1: left,
-        x2: right,
-        y1: (tick: DataValue) => computePos(tick, yScale),
-        y2: (tick: DataValue) => computePos(tick, yScale),
-        opacity: 1,
-        ...style,
-      }}
-      init={{ opacity: 0, ...enter }}
-      keyFn={(tick: DataValue, i: number) => dataKey?.(tick, i) ?? tick}
-      {...(animation as any)}
+      data={yTicks}
+      x1={left}
+      x2={right}
+      y1={(t) => computePos(t, yScale)}
+      y2={(t) => computePos(t, yScale)}
+      opacity={1}
+      enter={{ opacity: 0, ...enter }}
+      dataKey={(tick: DataValue, i: number) => dataKey?.(tick, i) ?? tick}
+      {...style}
     />
   )
 }

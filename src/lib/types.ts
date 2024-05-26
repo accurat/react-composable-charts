@@ -1,3 +1,6 @@
+import { EventHandler, SyntheticEvent } from 'react'
+import { EventsHandlers, SvgAttributes } from './types.svg'
+
 export const tuple = <Args extends any[]>(...args: Args) => args
 export const strTuple = <Args extends string[]>(...args: Args) => args
 export const isUndefinedTuple = (
@@ -31,11 +34,15 @@ type ToOptional<T> = Id<
 /**
  * Merge objects
  */
-type Merge<A, B> = ToOptional<{
-  [K in keyof A | keyof B]: Get<K, A> | Get<K, B>
-}>
+type Merge<A, B> = ToOptional<
+  {
+    [K in keyof A | keyof B]: Get<K, A> | Get<K, B>
+  }
+>
 
 export type Component<Props> = (props: Props) => JSX.Element
+
+// TODO: deprecate
 export interface CommonStyleProps {
   stroke?: string
   strokeWidth?: number
@@ -58,12 +65,31 @@ export interface CommonStyleProps {
   transform?: string
 }
 
+// TODO: deprecate
 export interface CommonStyleGetter<T> {
   stroke?: (datum: T) => string
   fill?: (datum: T) => string
 }
 
+// TODO: deprecate
 export type StyleProps<T> = Merge<CommonStyleProps, CommonStyleGetter<T>>
+
+export type SvgAttributesGetters<T> = {
+  [K in keyof SvgAttributes]: Getter<T, SvgAttributes[K]>
+}
+
+type NativeEvent<T> = T extends EventHandler<infer V>
+  ? V extends SyntheticEvent<any, infer E>
+    ? E
+    : never
+  : never
+
+export type NativeEventHandlers<T> = {
+  [Event in keyof EventsHandlers]?: (
+    event: NativeEvent<Required<EventsHandlers>[Event]>,
+    datum: T
+  ) => void
+}
 
 export type Iteratee<T, U> = (t: T, i: number) => U
 export type DefaultedIteratee<T, U> = U | Iteratee<T, U>
@@ -93,8 +119,8 @@ export interface AnimationProps<T> extends AnimationIteratees<T> {
   // exit?: CommonStyleProps;
 }
 
-export type Accessor<T, V> = (t: T) => V
-export type Getter<T, V> = V | Accessor<T, V>
+export type Accessor<Datum, Value> = (t: Datum) => Value
+export type Getter<Datum, Value> = Value | Accessor<Datum, Value>
 
 export function isAccessor<T, V>(
   getter: Getter<T, V>

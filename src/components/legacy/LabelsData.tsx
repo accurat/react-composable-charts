@@ -1,17 +1,18 @@
 import React from 'react'
-import { buildComputePos } from '../lib/scales'
+import { buildComputePos } from '../../lib/scales'
 import {
   DataAccessor,
   StyleProps,
   Getter,
   KeyAccessor,
   AnimationProps,
-} from '../lib/types'
-import { AnimatedDataset } from './AnimatedDataset'
-import { useSanitizedCascadingAnimation } from './Animation'
-import { useCartesianContext } from './internal'
-import { useComputableStyle } from './Style'
+} from '../../lib/types'
+import { AnimatedDataset } from '../AnimatedDataset'
+import { useSanitizedCascadingAnimation } from '../Animation'
+import { useCartesianContext } from '../internal'
+import { useComputableStyle } from '../Style'
 
+/** @deprecated */
 export interface LabelsDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   data: T[]
   dataX?: DataAccessor<T>
@@ -27,6 +28,7 @@ export interface LabelsDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   text: DataAccessor<T>
 }
 
+/** @deprecated use `Texts` instead. Will be removed in v1.0.0 */
 export function LabelsData<T>({
   data,
   dataX,
