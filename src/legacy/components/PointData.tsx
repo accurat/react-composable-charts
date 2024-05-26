@@ -1,10 +1,10 @@
 import React from 'react'
 import { computePos } from '../../lib/scales'
 import { AnimationProps, DataAccessor, StyleProps } from '../../lib/types'
-import { AnimatedDataset } from '../AnimatedDataset'
-import { useSanitizedCascadingAnimation } from '../Animation'
-import { useCartesianContext } from '../internal'
-import { useComputableStyle } from '../Style'
+import { AnimatedDataset } from '../../components/AnimatedDataset'
+import { useSanitizedCascadingAnimation } from '../../components/Animation'
+import { useCartesianContext } from '../../components/internal'
+import { useComputableStyle } from '../../components/Style'
 
 interface PointDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   data: T[]

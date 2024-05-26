@@ -8,10 +8,10 @@ import {
   toAccessor,
   AnimationProps,
 } from '../../lib/types'
-import { AnimatedDataset } from '../AnimatedDataset'
-import { useSanitizedCascadingAnimation } from '../Animation'
-import { useCartesianContext } from '../internal'
-import { useComputableStyle } from '../Style'
+import { AnimatedDataset } from '../../components/AnimatedDataset'
+import { useSanitizedCascadingAnimation } from '../../components/Animation'
+import { useCartesianContext } from '../../components/internal'
+import { useComputableStyle } from '../../components/Style'
 
 /** @deprecated use Bars instead.  */
 export type BarAxesConfig<T> =
