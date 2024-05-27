@@ -28,7 +28,7 @@ export interface LabelsDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   text: DataAccessor<T>
 }
 
-/** @deprecated use `Texts` instead. Will be removed in v1.0.0 */
+/** @deprecated since v0.1.5. Use `Texts` instead. Will be removed in v1.0.0 */
 export function LabelsData<T>({
   data,
   dataX,

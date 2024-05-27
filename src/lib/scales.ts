@@ -5,6 +5,7 @@ import {
   DataAccessor,
   Getter,
   toAccessor,
+  isNotNil,
 } from './types'
 
 export const scaleZero = (scale: CartesianScale) =>
@@ -36,6 +37,31 @@ export function computePos(
   if (position === 'start') return computeStartPos(value, scale)
   if (position === 'end') return computeEndPos(value, scale)
   return computeStartPos(value, scale) + scaleStep(scale) * position
+}
+
+export function createDataScale<T, U extends DataValue>(
+  dataAccessor: DataAccessor<T> | undefined,
+  scale: CartesianScale,
+  defaultValue: U,
+  position: 'center' | 'start' | 'end' | number = 'center'
+) {
+  return (d: T) => {
+    const computed = dataAccessor
+      ? computePos(dataAccessor(d), scale, position)
+      : defaultValue
+
+    return computed
+  }
+}
+
+export function combineGetters<T, U extends number>(
+  getters: (Getter<T, U> | undefined)[]
+) {
+  return (d: T) =>
+    getters
+      .filter(isNotNil)
+      .map((g) => toAccessor(g)(d))
+      .reduce((a, b) => a + b, 0)
 }
 
 /** @deprecated */

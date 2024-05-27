@@ -1,14 +1,15 @@
 import React from 'react'
 import { line } from 'd3-shape'
-import { AnimationProps, CommonStyleProps, DataAccessor } from '../lib/types'
-import { useCartesianContext } from './internal'
-import { useCascadingStyle } from './Style'
-import { computePos } from '../lib/scales'
-import { buildCurveFn, CurveType } from '../lib/curve'
-import { tuple } from '../lib/types'
-import { AnimatedDataset } from './AnimatedDataset'
-import { useSanitizedCascadingAnimation } from './Animation'
+import { AnimationProps, CommonStyleProps, DataAccessor } from '../../lib/types'
+import { useCartesianContext } from '../../components/internal'
+import { useCascadingStyle } from '../../components/Style'
+import { computePos } from '../../lib/scales'
+import { buildCurveFn, CurveType } from '../../lib/curve'
+import { tuple } from '../../lib/types'
+import { AnimatedDataset } from '../../components/AnimatedDataset'
+import { useSanitizedCascadingAnimation } from '../../components/Animation'
 
+/** @deprecated */
 export interface LineDataProps<T>
   extends CommonStyleProps,
     AnimationProps<T[]> {
@@ -18,6 +19,7 @@ export interface LineDataProps<T>
   curve?: CurveType
 }
 
+/** @deprecated since v0.1.5. Use `Line` instead. Will be removed in v1.0.0 */
 export function LineData<T>({
   data,
   x,

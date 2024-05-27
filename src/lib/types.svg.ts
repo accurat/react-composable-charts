@@ -11,7 +11,7 @@ export type SvgAttributes = {
   // Attributes which also defined in HTMLAttributes
   // See comment in SVGDOMPropertyConfig.js
   color?: string | undefined
-  height?: number | string | undefined
+  height?: number | undefined
   id?: string | undefined
   lang?: string | undefined
   max?: number | string | undefined
@@ -21,7 +21,7 @@ export type SvgAttributes = {
   name?: string | undefined
   target?: string | undefined
   type?: string | undefined
-  width?: number | string | undefined
+  width?: number | undefined
 
   // Other HTML properties supported by SVG elements in browsers
   role?: React.AriaRole | undefined
@@ -81,8 +81,8 @@ export type SvgAttributes = {
   contentScriptType?: number | string | undefined
   contentStyleType?: number | string | undefined
   cursor?: number | string | undefined
-  cx?: number | string | undefined
-  cy?: number | string | undefined
+  cx?: number | undefined
+  cy?: number | undefined
   d?: string | undefined
   decelerate?: number | string | undefined
   descent?: number | string | undefined
@@ -267,9 +267,9 @@ export type SvgAttributes = {
   widths?: number | string | undefined
   wordSpacing?: number | string | undefined
   writingMode?: number | string | undefined
-  x1?: number | string | undefined
-  x2?: number | string | undefined
-  x?: number | string | undefined
+  x1?: number | undefined
+  x2?: number | undefined
+  x?: number | undefined
   xChannelSelector?: string | undefined
   xHeight?: number | string | undefined
   xlinkActuate?: string | undefined
@@ -284,9 +284,9 @@ export type SvgAttributes = {
   xmlns?: string | undefined
   xmlnsXlink?: string | undefined
   xmlSpace?: string | undefined
-  y1?: number | string | undefined
-  y2?: number | string | undefined
-  y?: number | string | undefined
+  y1?: number | undefined
+  y2?: number | undefined
+  y?: number | undefined
   yChannelSelector?: string | undefined
   z?: number | string | undefined
   zoomAndPan?: string | undefined

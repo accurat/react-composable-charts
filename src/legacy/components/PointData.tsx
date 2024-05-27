@@ -13,7 +13,7 @@ interface PointDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   r?: number | ((datum: T) => number)
 }
 
-/** @deprecated use `Circles` instead. Will be removed in v1.0.0 */
+/** @deprecated since v0.1.5. Use `Circles` instead. Will be removed in v1.0.0 */
 export function PointData<T>({
   data,
   x,

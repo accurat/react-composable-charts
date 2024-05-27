@@ -9,7 +9,7 @@ import {
   CartesianScale,
 } from '../lib/types'
 import { useCartesianContext } from './internal'
-import { computePos, scaleZero } from '../lib/scales'
+import { combineGetters, createDataScale, scaleZero } from '../lib/scales'
 import { Elements } from './Elements'
 
 export type BarsAxesConfig<T> =
@@ -49,11 +49,11 @@ export function Bars<T>({
   const dataX = sanitizeAxisConfig(_dataX, xScale)
   const dataY = sanitizeAxisConfig(_dataY, yScale)
 
-  const x1 = (d: T) => computePos(dataX.base(d), xScale, 'start')
-  const y1 = (d: T) => computePos(dataY.base(d), yScale, 'end')
+  const x1 = createDataScale(dataX.base, xScale, 0, 'start')
+  const y1 = createDataScale(dataY.base, yScale, 0, 'end')
 
-  const x2 = (d: T) => computePos(dataX.to(d), xScale, 'end')
-  const y2 = (d: T) => computePos(dataY.to(d), yScale, 'start')
+  const x2 = createDataScale(dataX.to, xScale, 0, 'end')
+  const y2 = createDataScale(dataY.to, yScale, 0, 'start')
 
   const x = (d: T) => Math.min(x1(d), x2(d))
   const y = (d: T) => Math.min(y1(d), y2(d))
@@ -61,6 +61,13 @@ export function Bars<T>({
   const height = (d: T) => Math.abs(y1(d) - y2(d))
 
   return (
-    <Elements {...props} tag="rect" x={x} y={y} width={width} height={height} />
+    <Elements
+      {...props}
+      tag="rect"
+      x={combineGetters([x, props.x])}
+      y={combineGetters([y, props.y])}
+      width={combineGetters([width, props.width])}
+      height={combineGetters([height, props.height])}
+    />
   )
 }

@@ -8,6 +8,9 @@ export const isUndefinedTuple = (
 ): x is [undefined, undefined] => {
   return x.length === 2 && x[0] === undefined && x[1] === undefined
 }
+export const isNotNil = <T>(t: T | undefined | null): t is T => {
+  return t !== null && t !== undefined
+}
 /**
  * Type used to prettify complex type
  */
@@ -75,7 +78,7 @@ export interface CommonStyleGetter<T> {
 export type StyleProps<T> = Merge<CommonStyleProps, CommonStyleGetter<T>>
 
 export type SvgAttributesGetters<T> = {
-  [K in keyof SvgAttributes]: Getter<T, SvgAttributes[K]>
+  [K in keyof SvgAttributes]?: Getter<T, NonNullable<SvgAttributes[K]>>
 }
 
 type NativeEvent<T> = T extends EventHandler<infer V>

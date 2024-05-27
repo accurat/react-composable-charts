@@ -8,12 +8,13 @@ import {
   tuple,
 } from '../lib/types'
 import { StyleContext, useStyleContext } from './internal'
+import { SvgAttributes } from '../lib/types.svg'
 
 interface Props extends CommonStyleProps {
   children?: React.ReactNode
 }
 
-export function useCascadingStyle(curr: CommonStyleProps): CommonStyleProps {
+export function useCascadingStyle(curr: SvgAttributes): SvgAttributes {
   return { ...(useStyleContext() ?? {}), ...curr }
 }
 
@@ -30,6 +31,7 @@ function splitStyleProps<T>(props: StyleProps<T>) {
   )
 }
 
+/** @deprecated */
 export function useComputableStyle<T>(
   curr: StyleProps<T>,
   colorScale?: ScaleOrdinal

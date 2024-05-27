@@ -1,7 +1,7 @@
 import React from 'react'
 import { area } from 'd3-shape'
-import { buildCurveFn, CurveType } from '../lib/curve'
-import { computePos, scaleZero } from '../lib/scales'
+import { buildCurveFn, CurveType } from '../../lib/curve'
+import { computePos, scaleZero } from '../../lib/scales'
 import {
   AnimationProps,
   CartesianScale,
@@ -9,12 +9,13 @@ import {
   DataAccessor,
   DataGetter,
   toAccessor,
-} from '../lib/types'
-import { useCartesianContext } from './internal'
-import { useCascadingStyle } from './Style'
-import { AnimatedDataset } from './AnimatedDataset'
-import { useSanitizedCascadingAnimation } from './Animation'
+} from '../../lib/types'
+import { useCartesianContext } from '../../components/internal'
+import { useCascadingStyle } from '../../components/Style'
+import { AnimatedDataset } from '../../components/AnimatedDataset'
+import { useSanitizedCascadingAnimation } from '../../components/Animation'
 
+/** @deprecated */
 export type AreaYConfig<T> =
   | DataAccessor<T>
   | { base: DataGetter<T>; to: DataAccessor<T> }
@@ -32,6 +33,7 @@ function sanitizeYConfig<T>(
   return { to, base: toAccessor(base) }
 }
 
+/** @deprecated */
 export interface AreaDataProps<T>
   extends CommonStyleProps,
     AnimationProps<T[]> {
@@ -41,6 +43,7 @@ export interface AreaDataProps<T>
   curve?: CurveType
 }
 
+/** @deprecated since v0.1.5. Use `Area` instead. Will be removed in v1.0.0 */
 export function AreaData<T>({
   data,
   x,

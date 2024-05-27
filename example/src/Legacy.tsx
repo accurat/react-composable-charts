@@ -1,29 +1,25 @@
 import * as React from 'react'
 import {
+  AreaData,
+  BarData,
   Cartesian,
   Chart,
   ClipChart,
   ClipRect,
   element,
   Grid,
+  LabelsData,
+  LineData,
+  PointData,
+  RectData,
   Style,
   Tooltip,
   Svg,
+  useMouseContext,
   stackNarrow,
-  Circles,
-  Texts,
-  Bars,
-  Line,
-  Area,
-  Rects,
-  MouseConsumer,
-  CartesianConsumer,
-  computePos,
-  Elements,
 } from '../../src'
-import { extent, range, scaleOrdinal } from 'd3'
+import { extent, range } from 'd3'
 import { makeLayout } from 'yogurt-layout'
-import { LegacyExamples } from './Legacy'
 
 const createLinechartDataset = () => {
   const maxX = Math.random() * 100
@@ -84,7 +80,6 @@ const Linechart = () => {
               range: ['white', 'red'],
             }}
             interactive
-            nice
           >
             <Grid>
               <Style stroke="white">
@@ -113,39 +108,11 @@ const Linechart = () => {
             </Grid>
 
             <ClipRect {...layout.wrapper}>
-              <CartesianConsumer>
-                {({ xScale, yScale }) => (
-                  <Style opacity={0.75} strokeWidth={1}>
-                    <Elements
-                      tag="line"
-                      data={data}
-                      x1={(d) => computePos(d.x, xScale)}
-                      x2={(d) => computePos(d.x, xScale)}
-                      y1={layout.chart.top}
-                      y2={layout.chart.bottom}
-                      stroke={(d) => (d.x > 0 ? 'white' : 'red')}
-                      enter={{ opacity: 0 }}
-                      dataKey={(d) => d.key}
-                    />
-                    <Elements
-                      tag="line"
-                      data={data}
-                      x1={layout.chart.left}
-                      x2={layout.chart.right}
-                      y1={(d) => computePos(d.y, yScale)}
-                      y2={(d) => computePos(d.y, yScale)}
-                      stroke={(d) => (d.x > 0 ? 'white' : 'red')}
-                      enter={{ opacity: 0 }}
-                      dataKey={(d) => d.key}
-                    />
-                  </Style>
-                )}
-              </CartesianConsumer>
-              <Bars
+              <BarData
                 data={data}
                 dataKey={(d) => d.key}
-                data-x={{ to: (d) => d.x }}
-                data-y={(d) => d.y}
+                x={{ to: (d) => d.x }}
+                y={(d) => d.y}
                 opacity={0.4}
                 strokeWidth={10}
                 fill="blue"
@@ -153,11 +120,10 @@ const Linechart = () => {
                 enter={{ opacity: 0 }}
               />
 
-              <Area
+              <AreaData
                 data={data.slice().sort((a, b) => a.x - b.x)}
-                data-x={(d) => d.x}
-                data-y={{ to: (d) => d.y, base: (d) => d.y }}
-                y1={(d) => (d.y > 0 ? 100 : -100)}
+                x={(d) => d.x}
+                y={(d) => d.y}
                 curve="bump-x"
                 fill="yellow"
                 opacity={0.3}
@@ -165,10 +131,10 @@ const Linechart = () => {
                 enter={{ opacity: 0 }}
               />
 
-              <Line
+              <LineData
                 data={data.slice().sort((a, b) => a.x - b.x)}
-                data-x={(d) => d.x}
-                data-y={(d) => d.y}
+                x={(d) => d.x}
+                y={(d) => d.y}
                 stroke="yellow"
                 curve="bump-x"
                 dataKey={() => Math.random()}
@@ -176,42 +142,40 @@ const Linechart = () => {
                 enter={{ opacity: 0 }}
               />
 
-              <Rects
+              <RectData
                 data={data}
                 dataKey={(d) => d.key}
-                data-x={(d) => d.x}
-                data-y={(d) => d.y}
-                x={-25}
-                y={-25}
+                x={(d) => d.x}
+                y={(d) => d.y}
                 width={50}
                 height={50}
                 rx={10}
                 opacity={0.2}
-                fill={(d) => (d.x > 0 ? 'white' : 'red')}
+                fill={(d) => (d.x > 0 ? 'positive' : 'negative')}
                 enter={{ opacity: 0 }}
               />
 
-              <Circles
+              <PointData
                 data={data}
                 dataKey={(d) => d.key}
-                data-x={(d) => d.x}
-                data-y={(d) => d.y}
+                x={(d) => d.x}
+                y={(d) => d.y}
                 r={6}
                 fillOpacity={0.5}
                 opacity={1}
-                fill={(d) => (d.x > 0 ? 'white' : 'red')}
-                stroke={(d) => (d.x > 0 ? 'white' : 'red')}
+                fill={(d) => (d.x > 0 ? 'positive' : 'negative')}
+                stroke={(d) => (d.x > 0 ? 'positive' : 'negative')}
                 enter={{ opacity: 0 }}
               />
 
-              <Texts
+              <LabelsData
                 data={data}
                 text={(d) => `key: ${d.key.toFixed(4)}`}
-                data-x={(d) => d.x}
-                data-y={(d) => d.y}
-                x={(d) => (d.x > 0 ? -55 : 55)}
-                y={-1}
-                fill={(d) => (d.x < 0 ? 'white' : 'red')}
+                dataX={(d) => d.x}
+                dataY={(d) => d.y}
+                offsetX={(d) => (d.x > 0 ? -55 : 55)}
+                offsetY={-1}
+                fill={(d) => (d.x < 0 ? 'positive' : 'negative')}
                 dataKey={(d) => d.key}
                 dominantBaseline="middle"
                 textAnchor="middle"
@@ -220,31 +184,50 @@ const Linechart = () => {
               />
             </ClipRect>
 
-            <MouseConsumer>
-              {(mouse) => (
-                <>
-                  {mouse && (
-                    <circle cx={mouse.x} cy={mouse.y} r={10} fill="red" />
-                  )}
-                  <Tooltip
-                    x={0}
-                    y={0}
-                    style={{
-                      backgroundColor: 'white',
-                      padding: 10,
-                      borderRadius: 10,
-                    }}
-                  >
-                    mouse: {Math.round(mouse?.x ?? 0) || '-'},{' '}
-                    {Math.round(mouse?.y ?? 0) || '-'}
-                  </Tooltip>
-                </>
-              )}
-            </MouseConsumer>
+            <circle cx={100} cy={100} r={10} fill="red" />
+            <Tooltip
+              x={100}
+              y={-20}
+              horizontalAnchor="center"
+              verticalAnchor="end"
+            >
+              <div
+                style={{
+                  backgroundColor: 'white',
+                  padding: 10,
+                  borderRadius: 10,
+                }}
+              >
+                ciao
+              </div>
+            </Tooltip>
+
+            <TestMouse />
           </Cartesian>
         </Chart>
       </Svg>
     </div>
+  )
+}
+
+const TestMouse = () => {
+  const mouse = useMouseContext()
+  return (
+    <>
+      {mouse && <circle cx={mouse.x} cy={mouse.y} r={10} fill="red" />}
+      <Tooltip
+        x={0}
+        y={0}
+        style={{
+          backgroundColor: 'white',
+          padding: 10,
+          borderRadius: 10,
+        }}
+      >
+        mouse: {Math.round(mouse?.x ?? 0) || '-'},{' '}
+        {Math.round(mouse?.y ?? 0) || '-'}
+      </Tooltip>
+    </>
   )
 }
 
@@ -263,7 +246,6 @@ const createBarchartDataset = () => {
 
 const StackedBarchart = () => {
   const [data] = React.useState(createBarchartDataset)
-  const [hovered, setHovered] = React.useState(null as typeof data[0] | null)
 
   const [selectedA, setSelectedA] = React.useState(true)
   const [selectedC, setSelectedC] = React.useState(true)
@@ -299,7 +281,6 @@ const StackedBarchart = () => {
   const xDomain = [...new Set(stackedData.map((d) => d.group))]
   const yDomain = [0, extent(stackedData, (d) => d.to)[1]] as [number, number]
 
-  const colorScale = scaleOrdinal(categories, colors)
   return (
     <div
       style={{
@@ -355,25 +336,16 @@ const StackedBarchart = () => {
               </Style>
             </Grid>
 
-            <ClipChart>
-              <Bars
-                data={stackedData}
-                data-x={(d) => d.group}
-                data-y={{ to: (d) => d.to, base: (d) => d.base }}
-                fill={(d) => colorScale(d.category as string)}
-                stroke={(d) => colorScale(d.category as string)}
-                dataKey={(d) => d.group + d.category}
-                opacity={1}
-                fillOpacity={(d) => (!hovered || hovered === d.datum ? 1 : 0.5)}
-                transform="translate(0, 0)"
-                enter={{
-                  opacity: 0,
-                  transform: 'translate(100,0)',
-                }}
-                onMouseOver={(_, d) => setHovered(d.datum)}
-                onMouseOut={() => setHovered(null)}
-              />
-            </ClipChart>
+            <BarData
+              data={stackedData}
+              x={(d) => d.group}
+              y={{ to: (d) => d.to, base: (d) => d.base }}
+              fill={(d) => d.category as string}
+              dataKey={(d) => d.group + d.category}
+              opacity={1}
+              transform="translate(0, 0)"
+              enter={{ opacity: 0, transform: 'translate(100,0)' }}
+            />
           </Cartesian>
         </Chart>
       </svg>
@@ -381,14 +353,11 @@ const StackedBarchart = () => {
   )
 }
 
-const App = () => {
+export const LegacyExamples = () => {
   return (
     <div>
       <Linechart />
       <StackedBarchart />
-      <LegacyExamples />
     </div>
   )
 }
-
-export default App

@@ -8,14 +8,7 @@ import {
 import { AnimatedDataset } from './AnimatedDataset'
 import { useSanitizedCascadingAnimation } from './Animation'
 import { partition, pick } from 'lodash-es'
-
-export interface ElementsProps<T>
-  extends AnimationProps<T>,
-    SvgAttributesGetters<T>,
-    NativeEventHandlers<T> {
-  data: T[]
-  tag: string
-}
+import { useCascadingStyle } from './Style'
 
 const splitSvgProps = <T,>(
   props: SvgAttributesGetters<T> & NativeEventHandlers<T>
@@ -32,6 +25,14 @@ const splitSvgProps = <T,>(
   )
 }
 
+export interface ElementsProps<T>
+  extends AnimationProps<T>,
+    SvgAttributesGetters<T>,
+    NativeEventHandlers<T> {
+  data: T[]
+  tag: string
+}
+
 export function Elements<T>({
   tag,
   data,
@@ -44,13 +45,14 @@ export function Elements<T>({
 }: ElementsProps<T>) {
   const animation = useSanitizedCascadingAnimation({ delay, duration, easing })
   const [svgProps, events] = splitSvgProps(props)
+  const attributes = { ...useCascadingStyle({}), ...svgProps }
 
   return (
     <AnimatedDataset
       tag={tag}
       dataset={data}
       keyFn={dataKey}
-      attrs={svgProps}
+      attrs={attributes}
       events={events}
       init={enter}
       {...(animation as any)}

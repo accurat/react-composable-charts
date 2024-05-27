@@ -19,7 +19,6 @@ import {
   useGridContext,
 } from './internal'
 import { Range } from './Range'
-import { useCascadingStyle } from './Style'
 
 export interface GridProps {
   children?: React.ReactNode
@@ -116,18 +115,17 @@ export const Grid = (({
 Grid.XAxes = (props) => {
   const { left, right } = useChartContext()
   const { yAxes } = useGridContext()
-  const style = useCascadingStyle(props)
+
   // TODO: add animation
-  return <element.line {...style} x1={left} x2={right} y1={yAxes} y2={yAxes} />
+  return <element.line {...props} x1={left} x2={right} y1={yAxes} y2={yAxes} />
 }
 
 Grid.YAxes = (props) => {
   const { top, bottom } = useChartContext()
   const { xAxes } = useGridContext()
 
-  const style = useCascadingStyle(props)
   // TODO: add animation
-  return <element.line {...style} x1={xAxes} x2={xAxes} y1={top} y2={bottom} />
+  return <element.line {...props} x1={xAxes} x2={xAxes} y1={top} y2={bottom} />
 }
 
 Grid.XLabels = ({
@@ -145,7 +143,6 @@ Grid.XLabels = ({
 }) => {
   const { top } = useChartContext()
   const { yAxes, xTicks } = useGridContext()
-  const style = useCascadingStyle(props)
 
   const ticks = _ticks ?? xTicks
   const filteredTicks = ticks.filter(filter)
@@ -164,7 +161,7 @@ Grid.XLabels = ({
       opacity={1}
       enter={{ opacity: 0, ...enter }}
       dataKey={(tick, i) => dataKey?.(tick, i) ?? tick}
-      {...style}
+      {...props}
     />
   )
 }
@@ -184,7 +181,6 @@ Grid.YLabels = ({
 }) => {
   const { right } = useChartContext()
   const { xAxes, yTicks } = useGridContext()
-  const style = useCascadingStyle(props)
 
   const ticks = _ticks ?? yTicks
   const filteredTicks = ticks.filter(filter)
@@ -203,7 +199,7 @@ Grid.YLabels = ({
       opacity={1}
       enter={{ opacity: 0, ...enter }}
       dataKey={(tick, i) => dataKey?.(tick, i) ?? tick}
-      {...style}
+      {...props}
     />
   )
 }
@@ -212,7 +208,6 @@ Grid.XLines = ({ ticks, dataKey, delay, duration, enter, ...props }) => {
   const { top, bottom } = useChartContext()
   const { xScale } = useCartesianContext()
   const xTicks = ticks ?? useGridContext().xTicks
-  const style = useCascadingStyle(props)
 
   return (
     <Elements
@@ -225,7 +220,7 @@ Grid.XLines = ({ ticks, dataKey, delay, duration, enter, ...props }) => {
       opacity={1}
       enter={{ opacity: 0, ...enter }}
       dataKey={(tick: DataValue, i: number) => dataKey?.(tick, i) ?? tick}
-      {...style}
+      {...props}
     />
   )
 }
@@ -234,7 +229,6 @@ Grid.YLines = ({ ticks, dataKey, enter, duration, delay, ...props }) => {
   const { left, right } = useChartContext()
   const { yScale } = useCartesianContext()
   const yTicks = ticks ?? useGridContext().yTicks
-  const style = useCascadingStyle(props)
 
   return (
     <Elements
@@ -247,7 +241,7 @@ Grid.YLines = ({ ticks, dataKey, enter, duration, delay, ...props }) => {
       opacity={1}
       enter={{ opacity: 0, ...enter }}
       dataKey={(tick: DataValue, i: number) => dataKey?.(tick, i) ?? tick}
-      {...style}
+      {...props}
     />
   )
 }

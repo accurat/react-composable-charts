@@ -3,13 +3,12 @@ import {
   AnimationProps,
   SvgAttributesGetters,
   DataAccessor,
-  toAccessor,
   NativeEventHandlers,
   DataValue,
   DefaultedIteratee,
 } from '../lib/types'
 import { useCartesianContext } from './internal'
-import { computePos } from '../lib/scales'
+import { combineGetters, createDataScale } from '../lib/scales'
 import { Elements } from './Elements'
 
 export interface TextsProps<T>
@@ -29,15 +28,15 @@ export function Texts<T>({
 }: TextsProps<T>) {
   const { xScale, yScale } = useCartesianContext()
 
-  const x = (t: T) => {
-    const x = dataX ? computePos(dataX(t), xScale, 'center') : 0
-    return x + Number(toAccessor(props.x ?? 0)(t))
-  }
+  const x = createDataScale(dataX, xScale, 0, 'center')
+  const y = createDataScale(dataY, yScale, 0, 'center')
 
-  const y = (t: T) => {
-    const y = dataY ? computePos(dataY(t), yScale, 'center') : 0
-    return y + Number(toAccessor(props.y ?? 0)(t))
-  }
-
-  return <Elements {...props} tag="text" x={x} y={y} />
+  return (
+    <Elements
+      {...props}
+      tag="text"
+      x={combineGetters([x, props.x])}
+      y={combineGetters([y, props.y])}
+    />
+  )
 }

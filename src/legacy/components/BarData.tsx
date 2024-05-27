@@ -13,7 +13,7 @@ import { useSanitizedCascadingAnimation } from '../../components/Animation'
 import { useCartesianContext } from '../../components/internal'
 import { useComputableStyle } from '../../components/Style'
 
-/** @deprecated use Bars instead.  */
+/** @deprecated */
 export type BarAxesConfig<T> =
   | DataAccessor<T>
   | { base?: DataGetter<T>; to: DataGetter<T> }
@@ -39,7 +39,7 @@ export interface BarDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   y: BarAxesConfig<T>
 }
 
-/** @deprecated use `Bars` instead. Will be removed in v1.0.0 */
+/** @deprecated since v0.1.5. Use `Bars` instead. Will be removed in v1.0.0 */
 export function BarData<T>({
   data,
   x: _x,
