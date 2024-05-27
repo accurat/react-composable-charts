@@ -1,6 +1,6 @@
 import React from 'react'
 import { line } from 'd3-shape'
-import { AnimationProps, CommonStyleProps, DataAccessor } from '../../lib/types'
+import { AnimationProps, DataAccessor } from '../../lib/types'
 import { useCartesianContext } from '../../components/internal'
 import { useCascadingStyle } from '../../components/Style'
 import { computePos } from '../../lib/scales'
@@ -8,6 +8,7 @@ import { buildCurveFn, CurveType } from '../../lib/curve'
 import { tuple } from '../../lib/types'
 import { AnimatedDataset } from '../../components/AnimatedDataset'
 import { useSanitizedCascadingAnimation } from '../../components/Animation'
+import { CommonStyleProps } from '../lib/types'
 
 /** @deprecated */
 export interface LineDataProps<T>

@@ -188,6 +188,7 @@ interface CartesianProps<
 > {
   x?: CartesianScaleOptions<X>
   y?: CartesianScaleOptions<Y>
+  /** @deprecated */
   color?: OrdinalScaleConfigs
   nice?: 'x' | 'y' | boolean
   // onDrag?: CartesianGestureCallback<X, Y>

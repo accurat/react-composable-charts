@@ -5,7 +5,6 @@ import { computePos } from '../lib/scales'
 import {
   AnimationProps,
   CartesianScale,
-  CommonStyleProps,
   Component,
   DataValue,
   isScaleContinuous,
@@ -19,6 +18,7 @@ import {
   useGridContext,
 } from './internal'
 import { Range } from './Range'
+import { SvgAttributes } from '../lib/types.svg'
 
 export interface GridProps {
   children?: React.ReactNode
@@ -33,13 +33,13 @@ export interface GridProps {
 }
 
 export interface GridLinesProps
-  extends CommonStyleProps,
+  extends SvgAttributes,
     AnimationProps<DataValue> {
   ticks?: DataValue[]
 }
 
 export interface GridLabelsProps
-  extends CommonStyleProps,
+  extends Omit<SvgAttributes, 'filter' | 'format'>,
     AnimationProps<DataValue> {
   format?: (allValues: DataValue[]) => (value: DataValue, i: number) => string
   padding?: number
@@ -50,8 +50,8 @@ export interface GridLabelsProps
 }
 
 export type GridComponent = Component<GridProps> & {
-  XAxes: Component<CommonStyleProps>
-  YAxes: Component<CommonStyleProps>
+  XAxes: Component<SvgAttributes>
+  YAxes: Component<SvgAttributes>
   XLabels: Component<GridLabelsProps>
   YLabels: Component<GridLabelsProps>
   XLines: Component<GridLinesProps>

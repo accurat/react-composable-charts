@@ -37,45 +37,13 @@ type ToOptional<T> = Id<
 /**
  * Merge objects
  */
-type Merge<A, B> = ToOptional<
+export type Merge<A, B> = ToOptional<
   {
     [K in keyof A | keyof B]: Get<K, A> | Get<K, B>
   }
 >
 
 export type Component<Props> = (props: Props) => JSX.Element
-
-// TODO: deprecate
-export interface CommonStyleProps {
-  stroke?: string
-  strokeWidth?: number
-  fill?: string
-  opacity?: number
-  fillOpacity?: number
-  rx?: number
-
-  strokeDasharray?: string | number
-  strokeDashoffset?: string | number
-  strokeLinecap?: 'butt' | 'round' | 'square'
-  mask?: string
-
-  fontFamily?: string
-  fontSize?: string | number
-  fontWeight?: string | number
-  dominantBaseline?: 'auto' | 'middle' | 'hanging'
-  textAnchor?: 'start' | 'middle' | 'end'
-
-  transform?: string
-}
-
-// TODO: deprecate
-export interface CommonStyleGetter<T> {
-  stroke?: (datum: T) => string
-  fill?: (datum: T) => string
-}
-
-// TODO: deprecate
-export type StyleProps<T> = Merge<CommonStyleProps, CommonStyleGetter<T>>
 
 export type SvgAttributesGetters<T> = {
   [K in keyof SvgAttributes]?: Getter<T, NonNullable<SvgAttributes[K]>>
@@ -117,9 +85,7 @@ export interface AnimationIteratees<T> {
 }
 export interface AnimationProps<T> extends AnimationIteratees<T> {
   dataKey?: KeyAccessor<T>
-
-  enter?: CommonStyleProps
-  // exit?: CommonStyleProps;
+  enter?: SvgAttributes
 }
 
 export type Accessor<Datum, Value> = (t: Datum) => Value

@@ -1,8 +1,6 @@
 import React from 'react'
-import { buildComputePos } from '../../lib/scales'
 import {
   DataAccessor,
-  StyleProps,
   Getter,
   KeyAccessor,
   AnimationProps,
@@ -10,7 +8,9 @@ import {
 import { AnimatedDataset } from '../../components/AnimatedDataset'
 import { useSanitizedCascadingAnimation } from '../../components/Animation'
 import { useCartesianContext } from '../../components/internal'
-import { useComputableStyle } from '../../components/Style'
+import { useComputableStyle } from './Style'
+import { StyleProps } from '../lib/types'
+import { buildComputePos } from '../lib/scales'
 
 /** @deprecated */
 export interface LabelsDataProps<T> extends StyleProps<T>, AnimationProps<T> {

@@ -1,15 +1,11 @@
 import React from 'react'
 import { computePos, scaleZero } from '../../lib/scales'
-import {
-  AnimationProps,
-  DataAccessor,
-  StyleProps,
-  toAccessor,
-} from '../../lib/types'
+import { AnimationProps, DataAccessor, toAccessor } from '../../lib/types'
 import { AnimatedDataset } from '../../components/AnimatedDataset'
 import { useSanitizedCascadingAnimation } from '../../components/Animation'
 import { useCartesianContext } from '../../components/internal'
-import { useComputableStyle } from '../../components/Style'
+import { useComputableStyle } from './Style'
+import { StyleProps } from '../lib/types'
 
 /** @deprecated */
 export interface RectDataProps<T> extends StyleProps<T>, AnimationProps<T> {

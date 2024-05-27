@@ -1,8 +1,9 @@
 import { range } from 'lodash-es'
 import React from 'react'
-import { CommonStyleProps, isScaleContinuous } from '../../lib/types'
+import { isScaleContinuous } from '../../lib/types'
 import { useCartesianContext, useChartContext } from '../../components/internal'
 import { LineData } from './LineData'
+import { CommonStyleProps } from '../lib/types'
 
 /** @deprecated */
 export interface LineFunctionProps extends CommonStyleProps {

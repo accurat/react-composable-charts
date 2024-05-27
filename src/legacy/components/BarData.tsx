@@ -3,7 +3,6 @@ import { computePos, scaleZero } from '../../lib/scales'
 import {
   CartesianScale,
   DataAccessor,
-  StyleProps,
   DataGetter,
   toAccessor,
   AnimationProps,
@@ -11,7 +10,8 @@ import {
 import { AnimatedDataset } from '../../components/AnimatedDataset'
 import { useSanitizedCascadingAnimation } from '../../components/Animation'
 import { useCartesianContext } from '../../components/internal'
-import { useComputableStyle } from '../../components/Style'
+import { useComputableStyle } from './Style'
+import { StyleProps } from '../lib/types'
 
 /** @deprecated */
 export type BarAxesConfig<T> =

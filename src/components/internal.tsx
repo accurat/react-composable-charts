@@ -63,6 +63,7 @@ export const [CartesianContext, useCartesianContext, CartesianConsumer] =
   buildContext<{
     xScale: CartesianScale
     yScale: CartesianScale
+    /** @deprecated */
     colorScale?: ScaleOrdinal
   }>('Cartesian')
 
