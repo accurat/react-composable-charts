@@ -29,7 +29,8 @@
     "analyze": "size-limit --why",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "release": "np"
+    "release": "np",
+    "release:beta": "np --tag=beta --any-branch"
   },
   "peerDependencies": {
     "d3": "^7.3.0",
