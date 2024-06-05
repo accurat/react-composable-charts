@@ -37,15 +37,15 @@ export interface AreaProps<T>
     Omit<SvgAttributesGetters<T[]>, 'x' | 'y1' | 'y2'>,
     NativeEventHandlers<T[]> {
   data: T[]
-  'data-x': DataAccessor<T>
-  'data-y': AreaAxesConfig<T>
+  'x-data': DataAccessor<T>
+  'y-data': AreaAxesConfig<T>
   curve?: CurveType
 }
 
 export function Area<T>({
   data,
-  'data-x': dataX,
-  'data-y': _dataY,
+  'x-data': dataX,
+  'y-data': _dataY,
   curve = 'line',
   x: _x,
   y1: _y1,

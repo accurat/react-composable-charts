@@ -35,13 +35,13 @@ export interface BarsProps<T>
     SvgAttributesGetters<T>,
     NativeEventHandlers<T> {
   data: T[]
-  'data-x': BarsAxesConfig<T>
-  'data-y': BarsAxesConfig<T>
+  'x-data': BarsAxesConfig<T>
+  'y-data': BarsAxesConfig<T>
 }
 
 export function Bars<T>({
-  'data-x': _dataX,
-  'data-y': _dataY,
+  'x-data': _dataX,
+  'y-data': _dataY,
   ...props
 }: BarsProps<T>) {
   const { xScale, yScale } = useCartesianContext()

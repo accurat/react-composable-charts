@@ -14,13 +14,13 @@ export interface CirclesProps<T>
     SvgAttributesGetters<T>,
     NativeEventHandlers<T> {
   data: T[]
-  'data-x'?: DataAccessor<T>
-  'data-y'?: DataAccessor<T>
+  'x-data'?: DataAccessor<T>
+  'y-data'?: DataAccessor<T>
 }
 
 export function Circles<T>({
-  'data-x': dataX,
-  'data-y': dataY,
+  'x-data': dataX,
+  'y-data': dataY,
   ...props
 }: CirclesProps<T>) {
   const { xScale, yScale } = useCartesianContext()

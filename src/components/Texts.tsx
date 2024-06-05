@@ -16,14 +16,14 @@ export interface TextsProps<T>
     SvgAttributesGetters<T>,
     NativeEventHandlers<T> {
   data: T[]
-  'data-x'?: DataAccessor<T>
-  'data-y'?: DataAccessor<T>
+  'x-data'?: DataAccessor<T>
+  'y-data'?: DataAccessor<T>
   text?: DefaultedIteratee<T, DataValue>
 }
 
 export function Texts<T>({
-  'data-x': dataX,
-  'data-y': dataY,
+  'x-data': dataX,
+  'y-data': dataY,
   ...props
 }: TextsProps<T>) {
   const { xScale, yScale } = useCartesianContext()

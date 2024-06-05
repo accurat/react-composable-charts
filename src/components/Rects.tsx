@@ -14,15 +14,15 @@ export interface RectsProps<T>
     SvgAttributesGetters<T>,
     NativeEventHandlers<T> {
   data: T[]
-  'data-x'?: DataAccessor<T>
-  'data-y'?: DataAccessor<T>
+  'x-data'?: DataAccessor<T>
+  'y-data'?: DataAccessor<T>
   'data-width'?: DataAccessor<T>
   'data-height'?: DataAccessor<T>
 }
 
 export function Rects<T>({
-  'data-x': dataX,
-  'data-y': dataY,
+  'x-data': dataX,
+  'y-data': dataY,
   'data-width': dataWidth,
   'data-height': dataHeight,
   ...props

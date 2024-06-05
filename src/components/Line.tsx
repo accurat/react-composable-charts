@@ -18,15 +18,15 @@ export interface LineProps<T>
     Omit<SvgAttributesGetters<T[]>, 'x' | 'y'>,
     NativeEventHandlers<T[]> {
   data: T[]
-  'data-x'?: DataAccessor<T>
-  'data-y'?: DataAccessor<T>
+  'x-data'?: DataAccessor<T>
+  'y-data'?: DataAccessor<T>
   curve?: CurveType
 }
 
 export function Line<T>({
   data,
-  'data-x': dataX,
-  'data-y': dataY,
+  'x-data': dataX,
+  'y-data': dataY,
   x: _x,
   y: _y,
   curve: curveType = 'line',

@@ -153,7 +153,7 @@ Grid.XLabels = ({
   return (
     <Texts
       data={filteredTicks}
-      data-x={(t) => t}
+      x-data={(t) => t}
       y={yAxes + (inner ? -padding : padding)}
       textAnchor="middle"
       dominantBaseline={inner ? 'auto' : 'hanging'}
@@ -192,7 +192,7 @@ Grid.YLabels = ({
     <Texts
       data={filteredTicks}
       x={xAxes + (inner ? padding : -padding)}
-      data-y={(t) => t}
+      y-data={(t) => t}
       textAnchor={inner ? 'start' : 'end'}
       dominantBaseline="middle"
       text={formatter}

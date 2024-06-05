@@ -144,8 +144,8 @@ const Linechart = () => {
               <Bars
                 data={data}
                 dataKey={(d) => d.key}
-                data-x={{ to: (d) => d.x }}
-                data-y={(d) => d.y}
+                x-data={{ to: (d) => d.x }}
+                y-data={(d) => d.y}
                 opacity={0.4}
                 strokeWidth={10}
                 fill="blue"
@@ -155,8 +155,8 @@ const Linechart = () => {
 
               <Area
                 data={data.slice().sort((a, b) => a.x - b.x)}
-                data-x={(d) => d.x}
-                data-y={{ to: (d) => d.y, base: (d) => d.y }}
+                x-data={(d) => d.x}
+                y-data={{ to: (d) => d.y, base: (d) => d.y }}
                 y1={(d) => (d.y > 0 ? 100 : -100)}
                 curve="bump-x"
                 fill="yellow"
@@ -167,8 +167,8 @@ const Linechart = () => {
 
               <Line
                 data={data.slice().sort((a, b) => a.x - b.x)}
-                data-x={(d) => d.x}
-                data-y={(d) => d.y}
+                x-data={(d) => d.x}
+                y-data={(d) => d.y}
                 stroke="yellow"
                 curve="bump-x"
                 dataKey={() => Math.random()}
@@ -179,8 +179,8 @@ const Linechart = () => {
               <Rects
                 data={data}
                 dataKey={(d) => d.key}
-                data-x={(d) => d.x}
-                data-y={(d) => d.y}
+                x-data={(d) => d.x}
+                y-data={(d) => d.y}
                 x={-25}
                 y={-25}
                 width={50}
@@ -194,8 +194,8 @@ const Linechart = () => {
               <Circles
                 data={data}
                 dataKey={(d) => d.key}
-                data-x={(d) => d.x}
-                data-y={(d) => d.y}
+                x-data={(d) => d.x}
+                y-data={(d) => d.y}
                 r={6}
                 fillOpacity={0.5}
                 opacity={1}
@@ -207,8 +207,8 @@ const Linechart = () => {
               <Texts
                 data={data}
                 text={(d) => `key: ${d.key.toFixed(4)}`}
-                data-x={(d) => d.x}
-                data-y={(d) => d.y}
+                x-data={(d) => d.x}
+                y-data={(d) => d.y}
                 x={(d) => (d.x > 0 ? -55 : 55)}
                 y={-1}
                 fill={(d) => (d.x < 0 ? 'white' : 'red')}
@@ -358,8 +358,8 @@ const StackedBarchart = () => {
             <ClipChart>
               <Bars
                 data={stackedData}
-                data-x={(d) => d.group}
-                data-y={{ to: (d) => d.to, base: (d) => d.base }}
+                x-data={(d) => d.group}
+                y-data={{ to: (d) => d.to, base: (d) => d.base }}
                 fill={(d) => colorScale(d.category as string)}
                 stroke={(d) => colorScale(d.category as string)}
                 dataKey={(d) => d.group + d.category}
