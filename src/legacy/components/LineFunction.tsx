@@ -12,7 +12,7 @@ export interface LineFunctionProps extends CommonStyleProps {
   resolution?: number
 }
 
-/** @deprecated since v0.1.5. Will be removed in v1.0.0 */
+/** @deprecated since v0.2.0. Will be removed in v1.0.0 */
 export function LineFunction({
   fn,
   resolution = 1,

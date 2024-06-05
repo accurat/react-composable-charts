@@ -16,7 +16,7 @@ export interface RectDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   height: number | DataAccessor<T>
 }
 
-/** @deprecated since v0.1.5. Use `Rects` instead. Will be removed in v1.0.0 */
+/** @deprecated since v0.2.0. Use `Rects` instead. Will be removed in v1.0.0 */
 export function RectData<T>({
   data,
   x: _x,

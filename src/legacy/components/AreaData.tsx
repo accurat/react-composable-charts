@@ -43,7 +43,7 @@ export interface AreaDataProps<T>
   curve?: CurveType
 }
 
-/** @deprecated since v0.1.5. Use `Area` instead. Will be removed in v1.0.0 */
+/** @deprecated since v0.2.0. Use `Area` instead. Will be removed in v1.0.0 */
 export function AreaData<T>({
   data,
   x,
