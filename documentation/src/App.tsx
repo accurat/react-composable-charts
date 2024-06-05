@@ -373,8 +373,8 @@ const ExampleElementsDataAttributes = () => (
   <Circles
     data={data}
     ...
-    data-x={(d) => d.age}
-    data-y={(d) => d.weight}
+    x-data={(d) => d.age}
+    y-data={(d) => d.weight}
     ...
   />
 <Cartesian>`,
@@ -423,8 +423,8 @@ export default function App() {
 
           <Circles
             data={dataset}
-            data-x={(d) => d.x}
-            data-y={(d) => d.y}
+            x-data={(d) => d.x}
+            y-data={(d) => d.y}
             r={7}
             fill="${COLOR}"
           />
@@ -478,8 +478,8 @@ export default function App() {
           
           <Bars
             data={dataset}
-            data-x={(d) => d.key}
-            data-y={{ to: (d) => d.y, base: 0 }}
+            x-data={(d) => d.key}
+            y-data={{ to: (d) => d.y, base: 0 }}
             fill="#6bc2be"
           />
 
@@ -539,8 +539,8 @@ export default function App() {
 
         <Rects
           data={dataset}
-          data-x={(d) => d.x}
-          data-y={(d) => d.y}
+          x-data={(d) => d.x}
+          y-data={(d) => d.y}
           x={-10}
           y={-10}
           width={20}
@@ -600,8 +600,8 @@ return (
 
         <Line
           data={d3.sort(dataset, (d) => d.x)}
-          data-x={(d) => d.x}
-          data-y={(d) => d.y}
+          x-data={(d) => d.x}
+          y-data={(d) => d.y}
           strokeWidth={2}
           stroke="#6bc2be"
         />
@@ -657,8 +657,8 @@ export default function App() {
 
           <Area
             data={d3.sort(dataset, (d) => d.x)}
-            data-x={(d) => d.x}
-            data-y={(d) => d.y}
+            x-data={(d) => d.x}
+            y-data={(d) => d.y}
             fill="#6bc2be"
           />
         </Cartesian>
@@ -713,8 +713,8 @@ return (
 
         <Texts
           data={dataset}
-          data-x={(d) => d.x}
-          data-y={(d) => d.y}
+          x-data={(d) => d.x}
+          y-data={(d) => d.y}
           y={-10}
           textAnchor="middle"
           text={(d) => d.key}
@@ -722,8 +722,8 @@ return (
 
         <Circles
           data={dataset}
-          data-x={(d) => d.x}
-          data-y={(d) => d.y}
+          x-data={(d) => d.x}
+          y-data={(d) => d.y}
           r={2}
           fill="#6bc2be"
         />
@@ -802,8 +802,8 @@ export default function App() {
 
           <Circles
             data={dataset}
-            data-x={(d) => d.x}
-            data-y={(d) => d.y}
+            x-data={(d) => d.x}
+            y-data={(d) => d.y}
             r={7}
             fill="#6bc2be"
           />
@@ -871,8 +871,8 @@ export default function App() {
 
           <Bars
             data={stackedData}
-            data-x={(d) => d.group}
-            data-y={{ to: (d) => d.to, base: (d) => d.base }}
+            x-data={(d) => d.group}
+            y-data={{ to: (d) => d.to, base: (d) => d.base }}
             fill={(d) => colorScale(d.category)}
           />
 
@@ -1599,8 +1599,8 @@ const PageContent: {
 
         <h4>Data attributes</h4>
         <p>
-          Elements components also accepts <Code>data-*</Code> props, such as{' '}
-          <Code>data-x</Code> or <Code>data-y</Code>. These are used to map the
+          Elements components also accepts <Code>*-data</Code> props, such as{' '}
+          <Code>x-data</Code> or <Code>y-data</Code>. These are used to map the
           data point to the chart. This props should be a function that accepts
           an element of <Code>data</Code> and returns the <b>value</b> of the
           data point that should be passed to the scales.
@@ -1610,12 +1610,12 @@ const PageContent: {
           In the following example:
           <ul>
             <li>
-              <Code>data-x</Code> prop is a function that returns the value of
+              <Code>x-data</Code> prop is a function that returns the value of
               the data point that should be passed to the x scale (defined on
               the <Code>Cartesian</Code>)
             </li>
             <li>
-              <Code>data-y</Code> prop is a function that returns the value of
+              <Code>y-data</Code> prop is a function that returns the value of
               the data point that should be passed to the y scale (defined on
               the <Code>Cartesian</Code>)
             </li>
@@ -1624,7 +1624,7 @@ const PageContent: {
 
         <ExampleElementsDataAttributes />
         <p>
-          Each "elements" component has its set of <Code>data-*</Code>{' '}
+          Each "elements" component has its set of <Code>*-data</Code>{' '}
           properties. Read each component documentation to understand which
           properties are available.
         </p>
@@ -1667,7 +1667,7 @@ const PageContent: {
           <PropsTable
             props={[
               {
-                name: 'data-x',
+                name: 'x-data',
                 doc: (
                   <>
                     function that returns the value of the data point that
@@ -1678,7 +1678,7 @@ const PageContent: {
                 optional: true,
               },
               {
-                name: 'data-y',
+                name: 'y-data',
                 doc: (
                   <>
                     function that returns the value of the data point that
@@ -1695,7 +1695,7 @@ const PageContent: {
                   <>
                     value or function that returns the value of the data point
                     that should be passed to the <Code>cx</Code> attribute. If{' '}
-                    <Code>data-x</Code> prop is passed, the result of this
+                    <Code>x-data</Code> prop is passed, the result of this
                     function will be summed to the <Code>cx</Code> prop.
                   </>
                 ),
@@ -1707,7 +1707,7 @@ const PageContent: {
                   <>
                     value or function that returns the value of the data point
                     that should be passed to the <Code>cy</Code> attribute. If{' '}
-                    <Code>data-y</Code> prop is passed, the result of this
+                    <Code>y-data</Code> prop is passed, the result of this
                     function will be summed to the <Code>cy</Code> prop.
                   </>
                 ),
@@ -1736,7 +1736,7 @@ const PageContent: {
         <p>
           It renders a <Code>{'<rect>'}</Code> for each data point. This
           component is useful to render barcharts due to its
-          <Code>data-x</Code> and <Code>data-y</Code> props that allows to
+          <Code>x-data</Code> and <Code>y-data</Code> props that allows to
           specify the start and end of the bar.
         </p>
         <h4>Props:</h4>
@@ -1744,7 +1744,7 @@ const PageContent: {
           <PropsTable
             props={[
               {
-                name: 'data-x',
+                name: 'x-data',
                 doc: (
                   <>
                     It can either be a function that returns the value of the
@@ -1761,7 +1761,7 @@ const PageContent: {
                 optional: true,
               },
               {
-                name: 'data-y',
+                name: 'y-data',
                 doc: (
                   <>
                     It can either be a function that returns the value of the
@@ -1783,7 +1783,7 @@ const PageContent: {
                   <>
                     value or function that returns the value of the data point
                     that should be passed to the <Code>x</Code> attribute. If{' '}
-                    <Code>data-x</Code> prop is passed, the result of this
+                    <Code>x-data</Code> prop is passed, the result of this
                     function will be summed to the <Code>x</Code> prop.
                   </>
                 ),
@@ -1795,7 +1795,7 @@ const PageContent: {
                   <>
                     value or function that returns the value of the data point
                     that should be passed to the <Code>y</Code> attribute. If{' '}
-                    <Code>data-y</Code> prop is passed, the result of this
+                    <Code>y-data</Code> prop is passed, the result of this
                     function will be summed to the <Code>y</Code> prop.
                   </>
                 ),
@@ -1807,7 +1807,7 @@ const PageContent: {
                   <>
                     value or function that returns the value of the data point
                     that should be passed to the <Code>width</Code> attribute.
-                    If <Code>data-x</Code> prop is passed, the result of this
+                    If <Code>x-data</Code> prop is passed, the result of this
                     function will be summed to the <Code>width</Code> prop.
                   </>
                 ),
@@ -1818,7 +1818,7 @@ const PageContent: {
                   <>
                     value or function that returns the value of the data point
                     that should be passed to the <Code>height</Code> attribute.
-                    If <Code>data-y</Code> prop is passed, the result of this
+                    If <Code>y-data</Code> prop is passed, the result of this
                     function will be summed to the <Code>height</Code> prop.
                   </>
                 ),
@@ -1855,7 +1855,7 @@ const PageContent: {
           <PropsTable
             props={[
               {
-                name: 'data-x',
+                name: 'x-data',
                 doc: (
                   <>
                     function that returns the value of the data point that
@@ -1866,7 +1866,7 @@ const PageContent: {
                 optional: true,
               },
               {
-                name: 'data-y',
+                name: 'y-data',
                 doc: (
                   <>
                     function that returns the value of the data point that
@@ -1882,7 +1882,7 @@ const PageContent: {
                   <>
                     value or function that returns the value of the data point
                     that should be passed to the <Code>x</Code> attribute. If{' '}
-                    <Code>data-x</Code> prop is passed, the result of this
+                    <Code>x-data</Code> prop is passed, the result of this
                     function will be summed to the <Code>x</Code> prop.
                   </>
                 ),
@@ -1894,7 +1894,7 @@ const PageContent: {
                   <>
                     value or function that returns the value of the data point
                     that should be passed to the <Code>y</Code> attribute. If{' '}
-                    <Code>data-y</Code> prop is passed, the result of this
+                    <Code>y-data</Code> prop is passed, the result of this
                     function will be summed to the <Code>y</Code> prop.
                   </>
                 ),
@@ -1947,7 +1947,7 @@ const PageContent: {
         <PropsTable
           props={[
             {
-              name: 'data-x',
+              name: 'x-data',
               doc: (
                 <>
                   function that returns the value of the data point that should
@@ -1958,7 +1958,7 @@ const PageContent: {
               optional: true,
             },
             {
-              name: 'data-y',
+              name: 'y-data',
               doc: (
                 <>
                   function that returns the value of the data point that should
@@ -1980,7 +1980,7 @@ const PageContent: {
                 <>
                   value or function that returns the value of the data point
                   that should be used to calculate the position for each point
-                  of the path. If <Code>data-x</Code> prop is passed, the result
+                  of the path. If <Code>x-data</Code> prop is passed, the result
                   of this function will be summed to the <Code>x</Code> prop.
                 </>
               ),
@@ -1991,7 +1991,7 @@ const PageContent: {
                 <>
                   value or function that returns the value of the data point
                   that should be used to calculate the position for each point
-                  of the path. If <Code>data-y</Code> prop is passed, the result
+                  of the path. If <Code>y-data</Code> prop is passed, the result
                   of this function will be summed to the <Code>y</Code> prop.
                 </>
               ),
@@ -2022,7 +2022,7 @@ const PageContent: {
         <PropsTable
           props={[
             {
-              name: 'data-x',
+              name: 'x-data',
               doc: (
                 <>
                   function that returns the value of the data point that should
@@ -2033,7 +2033,7 @@ const PageContent: {
               optional: true,
             },
             {
-              name: 'data-y',
+              name: 'y-data',
               doc: (
                 <>
                   It can either be a function that returns the value of the data
@@ -2060,7 +2060,7 @@ const PageContent: {
                 <>
                   value or function that returns the value of the data point
                   that should be used to calculate the position for each point
-                  of the path. If <Code>data-x</Code> prop is passed, the result
+                  of the path. If <Code>x-data</Code> prop is passed, the result
                   of this function will be summed to the <Code>x</Code> prop.
                 </>
               ),
@@ -2072,7 +2072,7 @@ const PageContent: {
                   value or function that returns the value of the data point
                   that should be used to calculate the position for each point
                   of the path. If <Code>base</Code> is passed to{' '}
-                  <Code>data-y</Code> prop, the result of this function will be
+                  <Code>y-data</Code> prop, the result of this function will be
                   summed to the <Code>y1</Code> prop.
                 </>
               ),
@@ -2084,7 +2084,7 @@ const PageContent: {
                   value or function that returns the value of the data point
                   that should be used to calculate the position for each point
                   of the path. If <Code>to</Code> is passed to{' '}
-                  <Code>data-y</Code> prop, the result of this function will be
+                  <Code>y-data</Code> prop, the result of this function will be
                   summed to the <Code>y2</Code> prop.
                 </>
               ),
@@ -2113,7 +2113,7 @@ const PageContent: {
         <PropsTable
           props={[
             {
-              name: 'data-x',
+              name: 'x-data',
               doc: (
                 <>
                   function that returns the value of the data point that should
@@ -2123,7 +2123,7 @@ const PageContent: {
               ),
             },
             {
-              name: 'data-y',
+              name: 'y-data',
               doc: (
                 <>
                   function that returns the value of the data point that should
@@ -2148,7 +2148,7 @@ const PageContent: {
                 <>
                   value or function that returns the value of the data point
                   that should be passed to the <Code>x</Code> attribute. If{' '}
-                  <Code>data-x</Code> prop is passed, the result of this
+                  <Code>x-data</Code> prop is passed, the result of this
                   function will be summed to the <Code>x</Code> prop.
                 </>
               ),
@@ -2159,7 +2159,7 @@ const PageContent: {
                 <>
                   value or function that returns the value of the data point
                   that should be passed to the <Code>y</Code> attribute. If{' '}
-                  <Code>data-y</Code> prop is passed, the result of this
+                  <Code>y-data</Code> prop is passed, the result of this
                   function will be summed to the <Code>y</Code> prop.
                 </>
               ),
