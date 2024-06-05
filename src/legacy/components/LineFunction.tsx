@@ -1,15 +1,18 @@
 import { range } from 'lodash-es'
 import React from 'react'
-import { CommonStyleProps, isScaleContinuous } from '../lib/types'
-import { useCartesianContext, useChartContext } from './internal'
+import { isScaleContinuous } from '../../lib/types'
+import { useCartesianContext, useChartContext } from '../../components/internal'
 import { LineData } from './LineData'
+import { CommonStyleProps } from '../lib/types'
 
+/** @deprecated */
 export interface LineFunctionProps extends CommonStyleProps {
   fn: (x: number) => number
   /** points per pixel */
   resolution?: number
 }
 
+/** @deprecated since v0.2.0. Will be removed in v1.0.0 */
 export function LineFunction({
   fn,
   resolution = 1,

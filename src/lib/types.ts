@@ -1,9 +1,15 @@
+import { EventHandler, SyntheticEvent } from 'react'
+import { EventsHandlers, SvgAttributes } from './types.svg'
+
 export const tuple = <Args extends any[]>(...args: Args) => args
 export const strTuple = <Args extends string[]>(...args: Args) => args
 export const isUndefinedTuple = (
   x: [any, any]
 ): x is [undefined, undefined] => {
   return x.length === 2 && x[0] === undefined && x[1] === undefined
+}
+export const isNotNil = <T>(t: T | undefined | null): t is T => {
+  return t !== null && t !== undefined
 }
 /**
  * Type used to prettify complex type
@@ -31,39 +37,30 @@ type ToOptional<T> = Id<
 /**
  * Merge objects
  */
-type Merge<A, B> = ToOptional<{
-  [K in keyof A | keyof B]: Get<K, A> | Get<K, B>
-}>
+export type Merge<A, B> = ToOptional<
+  {
+    [K in keyof A | keyof B]: Get<K, A> | Get<K, B>
+  }
+>
 
 export type Component<Props> = (props: Props) => JSX.Element
-export interface CommonStyleProps {
-  stroke?: string
-  strokeWidth?: number
-  fill?: string
-  opacity?: number
-  fillOpacity?: number
-  rx?: number
 
-  strokeDasharray?: string | number
-  strokeDashoffset?: string | number
-  strokeLinecap?: 'butt' | 'round' | 'square'
-  mask?: string
-
-  fontFamily?: string
-  fontSize?: string | number
-  fontWeight?: string | number
-  dominantBaseline?: 'auto' | 'middle' | 'hanging'
-  textAnchor?: 'start' | 'middle' | 'end'
-
-  transform?: string
+export type SvgAttributesGetters<T> = {
+  [K in keyof SvgAttributes]?: Getter<T, NonNullable<SvgAttributes[K]>>
 }
 
-export interface CommonStyleGetter<T> {
-  stroke?: (datum: T) => string
-  fill?: (datum: T) => string
-}
+type NativeEvent<T> = T extends EventHandler<infer V>
+  ? V extends SyntheticEvent<any, infer E>
+    ? E
+    : never
+  : never
 
-export type StyleProps<T> = Merge<CommonStyleProps, CommonStyleGetter<T>>
+export type NativeEventHandlers<T> = {
+  [Event in keyof EventsHandlers]?: (
+    event: NativeEvent<Required<EventsHandlers>[Event]>,
+    datum: T
+  ) => void
+}
 
 export type Iteratee<T, U> = (t: T, i: number) => U
 export type DefaultedIteratee<T, U> = U | Iteratee<T, U>
@@ -88,13 +85,11 @@ export interface AnimationIteratees<T> {
 }
 export interface AnimationProps<T> extends AnimationIteratees<T> {
   dataKey?: KeyAccessor<T>
-
-  enter?: CommonStyleProps
-  // exit?: CommonStyleProps;
+  enter?: SvgAttributes
 }
 
-export type Accessor<T, V> = (t: T) => V
-export type Getter<T, V> = V | Accessor<T, V>
+export type Accessor<Datum, Value> = (t: Datum) => Value
+export type Getter<Datum, Value> = Value | Accessor<Datum, Value>
 
 export function isAccessor<T, V>(
   getter: Getter<T, V>

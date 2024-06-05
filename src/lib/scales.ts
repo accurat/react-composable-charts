@@ -5,6 +5,7 @@ import {
   DataAccessor,
   Getter,
   toAccessor,
+  isNotNil,
 } from './types'
 
 export const scaleZero = (scale: CartesianScale) =>
@@ -38,32 +39,27 @@ export function computePos(
   return computeStartPos(value, scale) + scaleStep(scale) * position
 }
 
-export function buildComputePos<T>(
+export function createDataScale<T, U extends DataValue>(
   dataAccessor: DataAccessor<T> | undefined,
-  positionGetter: Getter<T, number> | undefined,
-  offsetGetter: Getter<T, number> | undefined,
   scale: CartesianScale,
-  debugName: string
+  defaultValue: U,
+  position: 'center' | 'start' | 'end' | number = 'center'
 ) {
-  return (
-    datum: T,
-    position: 'center' | 'start' | 'end' | number = 'center'
-  ) => {
-    const offset =
-      offsetGetter !== undefined ? toAccessor(offsetGetter)(datum) : 0
+  return (d: T) => {
+    const computed = dataAccessor
+      ? computePos(dataAccessor(d), scale, position)
+      : defaultValue
 
-    if (positionGetter !== undefined) {
-      const positionAccessor = toAccessor(positionGetter)
-      return positionAccessor(datum) + offset
-    }
-
-    if (dataAccessor !== undefined) {
-      const value = dataAccessor(datum)
-      return computePos(value, scale, position) + offset
-    }
-
-    throw new Error(
-      `Please declare 1 of data${debugName} or position${debugName}`
-    )
+    return computed
   }
+}
+
+export function combineGetters<T, U extends number>(
+  getters: (Getter<T, U> | undefined)[]
+) {
+  return (d: T) =>
+    getters
+      .filter(isNotNil)
+      .map((g) => toAccessor(g)(d))
+      .reduce((a, b) => a + b, 0)
 }

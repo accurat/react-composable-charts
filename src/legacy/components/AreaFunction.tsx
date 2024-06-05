@@ -1,9 +1,11 @@
 import { range } from 'lodash-es'
 import React from 'react'
-import { CommonStyleProps, isScaleContinuous } from '../lib/types'
+import { isScaleContinuous } from '../../lib/types'
 import { AreaData } from './AreaData'
-import { useCartesianContext, useChartContext } from './internal'
+import { useCartesianContext, useChartContext } from '../../components/internal'
+import { CommonStyleProps } from '../lib/types'
 
+/** @deprecated */
 export interface AreaFunctionProps extends CommonStyleProps {
   fn: (x: number) => number
   fnBase?: (x: number) => number
@@ -11,6 +13,7 @@ export interface AreaFunctionProps extends CommonStyleProps {
   resolution?: number
 }
 
+/** @deprecated since v0.2.0. Will be removed in v1.0.0 */
 export function AreaFunction({
   fn,
   resolution = 1,

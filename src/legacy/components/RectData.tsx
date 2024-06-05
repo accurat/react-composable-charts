@@ -1,16 +1,13 @@
 import React from 'react'
-import { computePos, scaleZero } from '../lib/scales'
-import {
-  AnimationProps,
-  DataAccessor,
-  StyleProps,
-  toAccessor,
-} from '../lib/types'
-import { AnimatedDataset } from './AnimatedDataset'
-import { useSanitizedCascadingAnimation } from './Animation'
-import { useCartesianContext } from './internal'
+import { computePos, scaleZero } from '../../lib/scales'
+import { AnimationProps, DataAccessor, toAccessor } from '../../lib/types'
+import { AnimatedDataset } from '../../components/AnimatedDataset'
+import { useSanitizedCascadingAnimation } from '../../components/Animation'
+import { useCartesianContext } from '../../components/internal'
 import { useComputableStyle } from './Style'
+import { StyleProps } from '../lib/types'
 
+/** @deprecated */
 export interface RectDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   data: T[]
   x: DataAccessor<T>
@@ -19,6 +16,7 @@ export interface RectDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   height: number | DataAccessor<T>
 }
 
+/** @deprecated since v0.2.0. Use `Rects` instead. Will be removed in v1.0.0 */
 export function RectData<T>({
   data,
   x: _x,

@@ -1,18 +1,19 @@
 import React from 'react'
-import { computePos, scaleZero } from '../lib/scales'
+import { computePos, scaleZero } from '../../lib/scales'
 import {
   CartesianScale,
   DataAccessor,
-  StyleProps,
   DataGetter,
   toAccessor,
   AnimationProps,
-} from '../lib/types'
-import { AnimatedDataset } from './AnimatedDataset'
-import { useSanitizedCascadingAnimation } from './Animation'
-import { useCartesianContext } from './internal'
+} from '../../lib/types'
+import { AnimatedDataset } from '../../components/AnimatedDataset'
+import { useSanitizedCascadingAnimation } from '../../components/Animation'
+import { useCartesianContext } from '../../components/internal'
 import { useComputableStyle } from './Style'
+import { StyleProps } from '../lib/types'
 
+/** @deprecated */
 export type BarAxesConfig<T> =
   | DataAccessor<T>
   | { base?: DataGetter<T>; to: DataGetter<T> }
@@ -31,12 +32,14 @@ function sanitizeAxisConfig<T>(
   }
 }
 
+/** @deprecated */
 export interface BarDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   data: T[]
   x: BarAxesConfig<T>
   y: BarAxesConfig<T>
 }
 
+/** @deprecated since v0.2.0. Use `Bars` instead. Will be removed in v1.0.0 */
 export function BarData<T>({
   data,
   x: _x,

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useWindowSize } from 'react-use'
+import { Deprecated } from './Deprecated'
 
 export function WithSidebar({
   title,
@@ -7,7 +8,12 @@ export function WithSidebar({
   items,
 }: {
   title?: React.ReactNode
-  items: { title: React.ReactNode; id: string; level: number }[]
+  items: {
+    title: React.ReactNode
+    id: string
+    level: number
+    deprecated?: boolean
+  }[]
   children?: React.ReactNode
 }) {
   const { width } = useWindowSize(1, 1)
@@ -84,7 +90,9 @@ export function WithSidebar({
               })
             }}
           >
-            <div style={{ marginLeft: item.level * 30 }}>{item.title}</div>
+            <div style={{ marginLeft: item.level * 30 }}>
+              {item.title} {item.deprecated && <Deprecated />}
+            </div>
           </a>
         ))}
       </div>

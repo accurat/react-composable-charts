@@ -1,6 +1,6 @@
 import { groupBy, keyBy, get, compact } from 'lodash-es'
 
-type Stack<T> = {
+export type Stack<T> = {
   datum: T
   to: number
   base: number
@@ -8,7 +8,8 @@ type Stack<T> = {
   category: string | number
   value: number
 }
-interface StackNarrowProps<T extends object> {
+
+export interface StackNarrowProps<T extends object> {
   data: T[]
   getGroup: (d: T) => string
   categories: string[]

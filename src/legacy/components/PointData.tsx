@@ -1,10 +1,11 @@
 import React from 'react'
-import { computePos } from '../lib/scales'
-import { AnimationProps, DataAccessor, StyleProps } from '../lib/types'
-import { AnimatedDataset } from './AnimatedDataset'
-import { useSanitizedCascadingAnimation } from './Animation'
-import { useCartesianContext } from './internal'
+import { computePos } from '../../lib/scales'
+import { AnimationProps, DataAccessor } from '../../lib/types'
+import { AnimatedDataset } from '../../components/AnimatedDataset'
+import { useSanitizedCascadingAnimation } from '../../components/Animation'
+import { useCartesianContext } from '../../components/internal'
 import { useComputableStyle } from './Style'
+import { StyleProps } from '../lib/types'
 
 interface PointDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   data: T[]
@@ -13,6 +14,7 @@ interface PointDataProps<T> extends StyleProps<T>, AnimationProps<T> {
   r?: number | ((datum: T) => number)
 }
 
+/** @deprecated since v0.2.0. Use `Circles` instead. Will be removed in v1.0.0 */
 export function PointData<T>({
   data,
   x,
