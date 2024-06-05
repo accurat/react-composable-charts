@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Remove unused dependencies
+        run: yarn remove np husky
+
       - name: Install deps and build (with cache)
         uses: bahmutov/npm-install@v1
 
