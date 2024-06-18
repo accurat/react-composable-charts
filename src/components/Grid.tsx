@@ -33,9 +33,10 @@ export interface GridProps {
 }
 
 export interface GridLinesProps
-  extends SvgAttributes,
+  extends Omit<SvgAttributes, 'filter'>,
     AnimationProps<DataValue> {
   ticks?: DataValue[]
+  filter?: Filter<DataValue>
 }
 
 export interface GridLabelsProps
@@ -204,15 +205,24 @@ Grid.YLabels = ({
   )
 }
 
-Grid.XLines = ({ ticks, dataKey, delay, duration, enter, ...props }) => {
+Grid.XLines = ({
+  ticks,
+  dataKey,
+  delay,
+  duration,
+  enter,
+  filter = () => true,
+  ...props
+}) => {
   const { top, bottom } = useChartContext()
   const { xScale } = useCartesianContext()
   const xTicks = ticks ?? useGridContext().xTicks
+  const filteredTicks = xTicks.filter(filter)
 
   return (
     <Elements
       tag="line"
-      data={xTicks}
+      data={filteredTicks}
       x1={(t) => computePos(t, xScale)}
       x2={(t) => computePos(t, xScale)}
       y1={top}
@@ -225,15 +235,24 @@ Grid.XLines = ({ ticks, dataKey, delay, duration, enter, ...props }) => {
   )
 }
 
-Grid.YLines = ({ ticks, dataKey, enter, duration, delay, ...props }) => {
+Grid.YLines = ({
+  ticks,
+  dataKey,
+  enter,
+  duration,
+  delay,
+  filter = () => true,
+  ...props
+}) => {
   const { left, right } = useChartContext()
   const { yScale } = useCartesianContext()
   const yTicks = ticks ?? useGridContext().yTicks
+  const filteredTicks = yTicks.filter(filter)
 
   return (
     <Elements
       tag="line"
-      data={yTicks}
+      data={filteredTicks}
       x1={left}
       x2={right}
       y1={(t) => computePos(t, yScale)}
