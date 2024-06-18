@@ -51,7 +51,7 @@ export function Elements<T>({
     <AnimatedDataset
       tag={tag}
       dataset={data}
-      keyFn={dataKey}
+      keyFn={(d: T, i: number) => dataKey?.(d, i) ?? i}
       attrs={attributes}
       events={events}
       init={enter}
