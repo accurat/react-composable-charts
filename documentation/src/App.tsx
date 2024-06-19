@@ -5,6 +5,7 @@ import { CodeSandbox, RCC_VERSION } from './CodeSandbox'
 import { WithSidebar } from './WithSidebar'
 import { Deprecated } from './Deprecated'
 import React from 'react'
+import { TypeTooltip } from './TypeTooltip'
 
 const VERSION_TEXT = 'v' + RCC_VERSION
 function Table({ cells }: { cells: React.ReactNode[][] }) {
@@ -196,7 +197,7 @@ const ExampleInstall = () => (
 
 const ExampleBasicStructure = () => (
   <CodeSandbox
-    editorStyle={{ height: 220 }}
+    editorStyle={{ height: 'auto' }}
     hideLineNumbers
     hidePreview
     hideTabs
@@ -1432,6 +1433,30 @@ export default function App() {
   />
 )
 
+const TYPES = {
+  dataValue: (
+    <TypeTooltip tooltip={'type DataValue = string | number | Date'}>
+      DataValue
+    </TypeTooltip>
+  ),
+  dataValueArray: (
+    <TypeTooltip tooltip={'type DataValue = string | number | Date'}>
+      DataValue[]
+    </TypeTooltip>
+  ),
+
+  filterDataValue: (
+    <TypeTooltip
+      tooltip={`
+type DataValue = string | number | Date
+        
+type Filter<T> = (el: T, index: number, arr: T[]) => boolean`}
+    >
+      {'Filter<DataVaue>'}
+    </TypeTooltip>
+  ),
+}
+
 const PageContent: {
   title: React.ReactNode
   id: string
@@ -1603,13 +1628,13 @@ const PageContent: {
             },
             {
               name: 'filter',
-              type: '(tick: DataValue, i: number, ticks: DataValue[]) => boolean',
+              type: TYPES.filterDataValue,
               doc: 'function to filter the ticks.',
               optional: true,
             },
             {
               name: 'ticks',
-              type: 'DataValue[]',
+              type: TYPES.dataValueArray,
               doc: (
                 <>
                   Array of ticks to be displayed. This is used to override the
@@ -1633,7 +1658,7 @@ const PageContent: {
           props={[
             {
               name: 'ticks',
-              type: 'DataValue[]',
+              type: TYPES.dataValueArray,
               doc: (
                 <>
                   Array of ticks to be displayed. This is used to override the
@@ -1644,7 +1669,7 @@ const PageContent: {
             },
             {
               name: 'filter',
-              type: '(tick: DataValue, i: number, ticks: DataValue[]) => boolean',
+              type: TYPES.filterDataValue,
               doc: <>Function to filter the ticks.</>,
               optional: true,
             },
