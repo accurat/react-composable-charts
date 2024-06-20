@@ -113,21 +113,32 @@ export function AnimatedDataset({
                 tran.textTween(tweens.text)
               }),
           (update) =>
-            update.text(attrs.text).call((sel) => {
-              const tran = disableAnimation
-                ? sel
-                : sel.transition().ease(easing).delay(delay).duration(duration)
-
-              attrsList.forEach((a) => {
-                tran.attr(a, attrs[a])
+            update
+              .text(attrs.text)
+              .call((sel) => {
+                eventsList.forEach((event) => {
+                  sel.on(event, events[event])
+                })
               })
+              .call((sel) => {
+                const tran = disableAnimation
+                  ? sel
+                  : sel
+                      .transition()
+                      .ease(easing)
+                      .delay(delay)
+                      .duration(duration)
 
-              tweensList.forEach((a) => {
-                tran.attrTween(a, tweens[a])
-              })
+                attrsList.forEach((a) => {
+                  tran.attr(a, attrs[a])
+                })
 
-              tran.textTween(tweens.text)
-            }),
+                tweensList.forEach((a) => {
+                  tran.attrTween(a, tweens[a])
+                })
+
+                tran.textTween(tweens.text)
+              }),
           (exit) =>
             exit.call((sel) => {
               const tran = disableAnimation

@@ -370,7 +370,10 @@ const StackedBarchart = () => {
                   opacity: 0,
                   transform: 'translate(100,0)',
                 }}
-                onMouseOver={(_, d) => setHovered(d.datum)}
+                onMouseOver={(_, d) => {
+                  console.log({ selectedA, selectedC })
+                  setHovered(d.datum)
+                }}
                 onMouseOut={() => setHovered(null)}
               />
             </ClipChart>
