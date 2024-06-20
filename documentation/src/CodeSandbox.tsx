@@ -8,7 +8,7 @@ import {
 } from '@codesandbox/sandpack-react'
 import { CSSProperties } from 'react'
 
-export const RCC_VERSION = '0.2.2'
+export const RCC_VERSION = '0.2.3'
 
 const dependencies = {
   'react-composable-charts': RCC_VERSION,
