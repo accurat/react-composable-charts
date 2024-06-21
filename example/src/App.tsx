@@ -14,16 +14,22 @@ import {
   Texts,
   Bars,
   Line,
-  Area,
+  Lines,
   Rects,
   MouseConsumer,
   CartesianConsumer,
   computePos,
   Elements,
+  Areas,
 } from '../../src'
 import { extent, range, scaleOrdinal } from 'd3'
 import { makeLayout } from 'yogurt-layout'
 import { LegacyExamples } from './Legacy'
+
+const useRandomGenerator = <T,>(generator: () => T) => {
+  const [value, set] = React.useState(generator)
+  return [value, () => set(generator)] as const
+}
 
 const createLinechartDataset = () => {
   const maxX = Math.random() * 100
@@ -36,7 +42,7 @@ const createLinechartDataset = () => {
 }
 
 const Linechart = () => {
-  const [data, setData] = React.useState(createLinechartDataset)
+  const [data, shuffle] = useRandomGenerator(createLinechartDataset)
 
   const layout = makeLayout({
     id: 'svg',
@@ -63,9 +69,7 @@ const Linechart = () => {
       }}
     >
       <div>
-        <button onClick={() => setData(createLinechartDataset())}>
-          shuffle
-        </button>
+        <button onClick={shuffle}>shuffle</button>
       </div>
       <Svg width={layout.svg.width} height={layout.svg.height}>
         <Chart {...layout.chart}>
@@ -153,8 +157,17 @@ const Linechart = () => {
                 enter={{ opacity: 0 }}
               />
 
-              <Area
-                data={data.slice().sort((a, b) => a.x - b.x)}
+              <Areas
+                data={[
+                  data
+                    .slice()
+                    .sort((a, b) => a.x - b.x)
+                    .slice(0, 3),
+                  data
+                    .slice()
+                    .sort((a, b) => a.x - b.x)
+                    .slice(3),
+                ]}
                 x-data={(d) => d.x}
                 y-data={{ to: (d) => d.y, base: (d) => d.y }}
                 y1={(d) => (d.y > 0 ? 100 : -100)}
@@ -168,9 +181,31 @@ const Linechart = () => {
               <Line
                 data={data.slice().sort((a, b) => a.x - b.x)}
                 x-data={(d) => d.x}
-                y-data={(d) => d.y}
-                stroke="yellow"
+                y-data={(d) => d.y * 0.5}
+                y={5}
                 curve="bump-x"
+                stroke="lime"
+                strokeWidth={2}
+                dataKey={() => Math.random()}
+                opacity={1}
+                enter={{ opacity: 0 }}
+              />
+              <Lines
+                data={[
+                  data
+                    .slice()
+                    .sort((a, b) => a.x - b.x)
+                    .slice(0, 3),
+                  data
+                    .slice()
+                    .sort((a, b) => a.x - b.x)
+                    .slice(3),
+                ]}
+                x-data={(d) => d.x}
+                y-data={(d) => d.y}
+                curve="bump-x"
+                stroke="yellow"
+                strokeWidth={3}
                 dataKey={() => Math.random()}
                 opacity={1}
                 enter={{ opacity: 0 }}
@@ -262,7 +297,7 @@ const createBarchartDataset = () => {
 }
 
 const StackedBarchart = () => {
-  const [data] = React.useState(createBarchartDataset)
+  const [data, shuffle] = useRandomGenerator(createBarchartDataset)
   const [hovered, setHovered] = React.useState(null as typeof data[0] | null)
 
   const [selectedA, setSelectedA] = React.useState(true)
@@ -310,6 +345,9 @@ const StackedBarchart = () => {
         flexDirection: 'column',
       }}
     >
+      <div>
+        <button onClick={shuffle}>shuffle</button>
+      </div>
       <div style={{ color: 'white', display: 'flex' }}>
         <div>
           a
