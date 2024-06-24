@@ -24,7 +24,6 @@ export function Circles<T>({
   ...props
 }: CirclesProps<T>) {
   const { xScale, yScale } = useCartesianContext()
-
   const cx = createDataScale(dataX, xScale, 0)
   const cy = createDataScale(dataY, yScale, 0)
 

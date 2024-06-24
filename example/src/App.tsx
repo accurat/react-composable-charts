@@ -21,6 +21,7 @@ import {
   computePos,
   Elements,
   Areas,
+  Voronoi,
 } from '../../src'
 import { extent, range, scaleOrdinal } from 'd3'
 import { makeLayout } from 'yogurt-layout'
@@ -39,6 +40,130 @@ const createLinechartDataset = () => {
     y: (Math.random() * 2 - 1) * maxY,
     key: Math.random(),
   }))
+}
+
+const VoronoiChart = () => {
+  const [data, shuffle] = useRandomGenerator(() => {
+    const maxX = Math.random() * 100
+    const maxY = Math.random() * 100
+    return range(100).map(() => ({
+      x: (Math.random() * 2 - 1) * maxX,
+      y: (Math.random() * 2 - 1) * maxY,
+      key: Math.random(),
+    }))
+  })
+
+  const [hovered, setHovered] = React.useState(null as typeof data[0] | null)
+  const [showVoronoi, setShowVoronoi] = React.useState(true)
+  const layout = makeLayout({
+    id: 'svg',
+    width: 600,
+    height: 600,
+    padding: 10,
+    children: [
+      {
+        id: 'wrapper',
+        padding: 20,
+        children: [{ id: 'chart' }],
+      },
+    ],
+  })
+
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+      }}
+    >
+      <div>
+        <button onClick={shuffle}>shuffle</button>
+      </div>
+      <div>
+        <div style={{ color: 'white', display: 'flex' }}>
+          show voronoi
+          <input
+            type="checkbox"
+            checked={showVoronoi}
+            onChange={() => setShowVoronoi(!showVoronoi)}
+          />
+        </div>
+      </div>
+      <Svg width={layout.svg.width} height={layout.svg.height}>
+        <Chart {...layout.chart}>
+          <Cartesian
+            x={{
+              scale: 'linear',
+              domain: extent(data.map((d) => d.x)) as [number, number],
+            }}
+            y={{
+              scale: 'linear',
+              domain: extent(data.map((d) => d.y)) as [number, number],
+            }}
+            nice
+          >
+            <Grid xAnchor="bottom" yAnchor="left" tickCount={3}>
+              <Style stroke="white">
+                <ClipChart>
+                  <Grid.XLines opacity={0.3} />
+                  <Grid.YLines opacity={0.3} />
+                  <Grid.XAxes strokeWidth={2} />
+                  <Grid.YAxes strokeWidth={2} />
+                </ClipChart>
+
+                <element.rect
+                  x={layout.chart.left}
+                  y={layout.chart.top}
+                  width={layout.chart.width}
+                  height={layout.chart.height}
+                  fill="none"
+                  opacity={0.3}
+                />
+              </Style>
+              <Style fill="white">
+                <ClipRect {...layout.svg}>
+                  <Grid.XLabels padding={5} />
+                  <Grid.YLabels padding={5} />
+                </ClipRect>
+              </Style>
+            </Grid>
+
+            <ClipRect {...layout.wrapper}>
+              <Voronoi
+                data={data}
+                dataKey={(d) => d.datum.key}
+                x-data={(d) => d.x}
+                y-data={(d) => d.y}
+                fillOpacity={0.25}
+                opacity={showVoronoi ? 1 : 0}
+                fill={(d) => (d.datum.key === hovered?.key ? 'red' : 'white')}
+                stroke={(d) => (d.datum.key === hovered?.key ? 'red' : 'white')}
+                enter={{ opacity: 0 }}
+                onMouseOver={(_, d) => setHovered(d.datum)}
+                onMouseOut={() => setHovered(null)}
+              />
+              <Circles
+                data={data}
+                dataKey={(d) => d.key}
+                x-data={(d) => d.x}
+                y-data={(d) => d.y}
+                r={(d) => (d.key === hovered?.key ? 10 : 3)}
+                fillOpacity={0.5}
+                opacity={1}
+                fill={(d) => (d.key === hovered?.key ? 'yellow' : 'white')}
+                stroke={(d) => (d.key === hovered?.key ? 'yellow' : 'white')}
+                enter={{ opacity: 0 }}
+                pointerEvents="none"
+              />
+            </ClipRect>
+          </Cartesian>
+        </Chart>
+      </Svg>
+    </div>
+  )
 }
 
 const Linechart = () => {
@@ -425,6 +550,7 @@ const StackedBarchart = () => {
 const App = () => {
   return (
     <div>
+      <VoronoiChart />
       <Linechart />
       <StackedBarchart />
       <LegacyExamples />
