@@ -24,6 +24,7 @@ import {
 import { extent, range, scaleOrdinal } from 'd3'
 import { makeLayout } from 'yogurt-layout'
 import { LegacyExamples } from './Legacy'
+import { BarchartToTestDisableAnimation } from './BarchartToTestDisableAnimation'
 
 const createLinechartDataset = () => {
   const maxX = Math.random() * 100
@@ -390,6 +391,7 @@ const App = () => {
       <Linechart />
       <StackedBarchart />
       <LegacyExamples />
+      <BarchartToTestDisableAnimation />
     </div>
   )
 }

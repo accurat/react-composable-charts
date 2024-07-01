@@ -82,6 +82,7 @@ export interface AnimationIteratees<T> {
   delay?: DefaultedIteratee<T, number>
   duration?: DefaultedIteratee<T, number>
   easing?: (time: number) => number
+  disableAnimationByAttr?: Record<string, boolean>
 }
 export interface AnimationProps<T> extends AnimationIteratees<T> {
   dataKey?: KeyAccessor<T>
