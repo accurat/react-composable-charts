@@ -55,6 +55,7 @@ export function AnimatedDataset({
   delay = 0,
   tweens: unparsedTweens = {},
   disableAnimation = false,
+  disableAnimationByAttr: unparseDisableAnimationByAttr = {},
   easing = DEFAULT_EASE,
 }) {
   const ref = React.createRef()
@@ -67,6 +68,10 @@ export function AnimatedDataset({
     const init = mapKeys(unparsedInit, parseAttributeName)
     const events = mapKeys(unparsedEvents, parseEventName)
     const tweens = mapKeys(unparsedTweens, parseAttributeName)
+    const disableAnimationByAttr = mapKeys(
+      unparseDisableAnimationByAttr,
+      parseAttributeName
+    )
 
     const attrsList = Object.keys(attrs).filter((a) => a !== 'text')
     const tweensList = Object.keys(tweens).filter((a) => a !== 'text')
@@ -79,8 +84,8 @@ export function AnimatedDataset({
         .selectAll(tag)
         .data(dataset, keyFn)
         .join(
-          (enter) =>
-            enter
+          (enter) => {
+            return enter
               .append(tag)
               .text(attrs.text)
               .call((sel) => {
@@ -94,26 +99,30 @@ export function AnimatedDataset({
                 })
               })
               .call((sel) => {
-                const tran = disableAnimation
-                  ? sel
-                  : sel
-                      .transition()
-                      .ease(easing)
-                      .delay(delay)
-                      .duration(duration)
-
                 attrsList.forEach((a) => {
+                  const shouldDisableAnimation =
+                    disableAnimationByAttr.hasOwnProperty(a)
+                      ? disableAnimationByAttr[a]
+                      : disableAnimation
+
+                  const tran = shouldDisableAnimation
+                    ? sel
+                    : sel
+                        .transition(a)
+                        .ease(easing)
+                        .delay(delay)
+                        .duration(duration)
+                        .textTween(tweens.text)
                   tran.attr(a, attrs[a])
                 })
 
                 tweensList.forEach((a) => {
                   tran.attrTween(a, tweens[a])
                 })
-
-                tran.textTween(tweens.text)
-              }),
-          (update) =>
-            update
+              })
+          },
+          (update) => {
+            return update
               .text(attrs.text)
               .call((sel) => {
                 eventsList.forEach((event) => {
@@ -121,42 +130,51 @@ export function AnimatedDataset({
                 })
               })
               .call((sel) => {
-                const tran = disableAnimation
-                  ? sel
-                  : sel
-                      .transition()
-                      .ease(easing)
-                      .delay(delay)
-                      .duration(duration)
-
                 attrsList.forEach((a) => {
+                  const shouldDisableAnimation =
+                    disableAnimationByAttr.hasOwnProperty(a)
+                      ? disableAnimationByAttr[a]
+                      : disableAnimation
+                  const tran = shouldDisableAnimation
+                    ? sel
+                    : sel
+                        .transition(a)
+                        .ease(easing)
+                        .delay(delay)
+                        .duration(duration)
+                        .textTween(tweens.text)
                   tran.attr(a, attrs[a])
                 })
 
                 tweensList.forEach((a) => {
                   tran.attrTween(a, tweens[a])
                 })
-
-                tran.textTween(tweens.text)
-              }),
-          (exit) =>
-            exit.call((sel) => {
-              const tran = disableAnimation
-                ? sel
-                : sel.transition().ease(easing).delay(delay).duration(duration)
-
+              })
+          },
+          (exit) => {
+            return exit.call((sel) => {
               oldAttrsList.forEach((a) => {
-                tran.attr(a, fallback(init[a], oldAttrs[a]))
+                const shouldDisableAnimation =
+                  disableAnimationByAttr.hasOwnProperty(a)
+                    ? disableAnimationByAttr[a]
+                    : disableAnimation
+                const tran = shouldDisableAnimation
+                  ? sel
+                  : sel
+                      .transition(a)
+                      .ease(easing)
+                      .delay(delay)
+                      .duration(duration)
+                      .attr(a, fallback(init[a], oldAttrs[a]))
+                      .textTween(tweens.text)
+                tran.remove()
               })
 
               tweensList.forEach((a) => {
                 tran.attrTween(a, tweens[a])
               })
-
-              tran.textTween(tweens.text)
-
-              tran.remove()
             })
+          }
         )
       refOldAttrs.current = attrs
     }

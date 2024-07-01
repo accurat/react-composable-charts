@@ -31,6 +31,8 @@ export interface ElementsProps<T>
     NativeEventHandlers<T> {
   data: T[]
   tag: string
+  disableAnimation?: boolean
+  disableAnimationByAttr?: Record<string, boolean>
 }
 
 export function Elements<T>({
@@ -41,6 +43,8 @@ export function Elements<T>({
   duration,
   enter,
   easing,
+  disableAnimation = false,
+  disableAnimationByAttr = {},
   ...props
 }: ElementsProps<T>) {
   const animation = useSanitizedCascadingAnimation({ delay, duration, easing })
@@ -55,6 +59,8 @@ export function Elements<T>({
       attrs={attributes}
       events={events}
       init={enter}
+      disableAnimation={disableAnimation}
+      disableAnimationByAttr={disableAnimationByAttr}
       {...(animation as any)}
     />
   )
